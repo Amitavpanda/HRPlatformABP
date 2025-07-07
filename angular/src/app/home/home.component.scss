@@ -1,0 +1,13 @@
+/* Styles for the home component */
+.card-bg-image {
+  position: absolute;
+  width: 630px;
+  height: auto;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+.starting-content {
+  position: relative;
+  z-index: 2;
+}
