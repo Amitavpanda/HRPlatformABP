@@ -49,7 +49,7 @@ const routes: Routes = [
     path: 'text-template-management',
     loadChildren: () =>
       import('@volo/abp.ng.text-template-management').then(m =>
-        m.TextTemplateManagementModule.forLazy()
+        m.TextTemplateManagementModule.forLazy(),
       ),
   },
   {
@@ -61,8 +61,13 @@ const routes: Routes = [
     path: 'gdpr-cookie-consent',
     loadChildren: () =>
       import('./gdpr-cookie-consent/gdpr-cookie-consent.module').then(
-        m => m.GdprCookieConsentModule
+        m => m.GdprCookieConsentModule,
       ),
+  },
+  {
+    path: 'hrmanagers',
+    loadChildren: () =>
+      import('./hrmanagers/hrmanager/hrmanager.module').then(m => m.HRManagerModule),
   },
 ];
 

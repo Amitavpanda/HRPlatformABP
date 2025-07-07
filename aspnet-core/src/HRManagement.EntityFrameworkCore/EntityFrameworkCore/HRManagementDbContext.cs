@@ -1,3 +1,5 @@
+using HRManagement.HRManagers;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -28,6 +30,7 @@ public class HRManagementDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<HRManager> HRManagers { get; set; } = null!;
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     #region Entities from the modules
@@ -93,5 +96,21 @@ public class HRManagementDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<HRManager>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "HRManagers", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.Department).HasColumnName(nameof(HRManager.Department)).HasMaxLength(HRManagerConsts.DepartmentMaxLength);
+                b.Property(x => x.HRNumber).HasColumnName(nameof(HRManager.HRNumber)).HasMaxLength(HRManagerConsts.HRNumberMaxLength);
+                b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
+            });
+
+        }
     }
 }

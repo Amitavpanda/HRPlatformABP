@@ -13,4 +13,12 @@ public static class HRManagementPermissions
 
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
+
+    public static class HRManagers
+    {
+        public const string Default = GroupName + ".HRManagers";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

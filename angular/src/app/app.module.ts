@@ -22,16 +22,22 @@ import { FeatureManagementModule } from '@abp/ng.feature-management';
 import { AbpOAuthModule } from '@abp/ng.oauth';
 import { ThemeLeptonXModule, HttpErrorComponent } from '@volosoft/abp.ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@volosoft/abp.ng.theme.lepton-x/layouts';
-import { ThemeSharedModule, withHttpErrorConfig, withValidationBluePrint, provideAbpThemeShared } from '@abp/ng.theme.shared';
+import {
+  ThemeSharedModule,
+  withHttpErrorConfig,
+  withValidationBluePrint,
+  provideAbpThemeShared,
+} from '@abp/ng.theme.shared';
+import { HRMANAGERS_HRMANAGER_ROUTE_PROVIDER } from './hrmanagers/hrmanager/providers/hrmanager-route.provider';
 @NgModule({
-    declarations: [AppComponent],
-    imports: [
+  declarations: [AppComponent],
+  imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule.forRoot({
-        environment,
-        registerLocaleFn: registerLocale(),
+      environment,
+      registerLocaleFn: registerLocale(),
     }),
     AbpOAuthModule.forRoot(),
     AccountAdminConfigModule.forRoot(),
@@ -46,22 +52,30 @@ import { ThemeSharedModule, withHttpErrorConfig, withValidationBluePrint, provid
     CommercialUiConfigModule.forRoot(),
     FeatureManagementModule.forRoot(),
     GdprConfigModule.forRoot({
-        privacyPolicyUrl: 'gdpr-cookie-consent/privacy',
-        cookiePolicyUrl: 'gdpr-cookie-consent/cookie',
+      privacyPolicyUrl: 'gdpr-cookie-consent/privacy',
+      cookiePolicyUrl: 'gdpr-cookie-consent/cookie',
     }),
-    ThemeLeptonXModule.forRoot(), SideMenuLayoutModule.forRoot(), ThemeSharedModule
-],
-    providers: [APP_ROUTE_PROVIDER, provideAbpThemeShared(withValidationBluePrint({
-        wrongPassword: 'Please choose 1q2w3E*'
-    }), withHttpErrorConfig({
+    ThemeLeptonXModule.forRoot(),
+    SideMenuLayoutModule.forRoot(),
+    ThemeSharedModule,
+  ],
+  providers: [
+    APP_ROUTE_PROVIDER,
+    provideAbpThemeShared(
+      withValidationBluePrint({
+        wrongPassword: 'Please choose 1q2w3E*',
+      }),
+      withHttpErrorConfig({
         errorScreen: {
-            component: HttpErrorComponent,
-            forWhichErrors: [401, 403, 404, 500],
-            hideCloseIcon: true
-        }
-    }))],
-    bootstrap: [AppComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          component: HttpErrorComponent,
+          forWhichErrors: [401, 403, 404, 500],
+          hideCloseIcon: true,
+        },
+      }),
+    ),
+    HRMANAGERS_HRMANAGER_ROUTE_PROVIDER,
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {
-}
+export class AppModule {}

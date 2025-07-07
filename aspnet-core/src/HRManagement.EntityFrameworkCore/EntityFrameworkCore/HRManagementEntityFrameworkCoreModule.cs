@@ -1,3 +1,4 @@
+using HRManagement.HRManagers;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Uow;
@@ -46,15 +47,17 @@ public class HRManagementEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<HRManagementDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<HRManager, HRManagers.EfCoreHRManagerRepository>();
+
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also HRManagementDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also HRManagementDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
 

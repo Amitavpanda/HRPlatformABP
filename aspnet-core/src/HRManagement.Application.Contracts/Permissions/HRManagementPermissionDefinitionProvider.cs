@@ -16,6 +16,11 @@ public class HRManagementPermissionDefinitionProvider : PermissionDefinitionProv
 
         //Define your own permissions here. Example:
         //myGroup.AddPermission(HRManagementPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+        var hRManagerPermission = myGroup.AddPermission(HRManagementPermissions.HRManagers.Default, L("Permission:HRManagers"));
+        hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Create, L("Permission:Create"));
+        hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Edit, L("Permission:Edit"));
+        hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)
