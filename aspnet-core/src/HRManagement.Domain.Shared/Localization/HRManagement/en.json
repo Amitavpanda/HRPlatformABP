@@ -71,6 +71,23 @@
     "MinDepartment": "Min Department",
     "MinHRNumber": "Min H R Number",
     "MaxDepartment": "Max Department",
-    "MaxHRNumber": "Max H R Number"
+    "MaxHRNumber": "Max H R Number",
+    "Permission:Employees": "Employees",
+    "Employees": "Employees",
+    "NewEmployee": "New Employee",
+    "Employee": "Employee",
+    "Menu:Employees": "Employees",
+    "EmployeeNumber": "Employee Number",
+    "DateOfJoining": "Date Of Joining",
+    "LeaveBalance": "Leave Balance",
+    "BaseSalary": "Base Salary",
+    "MinEmployeeNumber": "Min Employee Number",
+    "MinDateOfJoining": "Min Date Of Joining",
+    "MinLeaveBalance": "Min Leave Balance",
+    "MinBaseSalary": "Min Base Salary",
+    "MaxEmployeeNumber": "Max Employee Number",
+    "MaxDateOfJoining": "Max Date Of Joining",
+    "MaxLeaveBalance": "Max Leave Balance",
+    "MaxBaseSalary": "Max Base Salary"
   }
 }

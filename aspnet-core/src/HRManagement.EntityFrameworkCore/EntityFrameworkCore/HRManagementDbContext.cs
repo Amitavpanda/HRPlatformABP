@@ -1,3 +1,4 @@
+using HRManagement.Employees;
 using HRManagement.HRManagers;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ public class HRManagementDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<HRManager> HRManagers { get; set; } = null!;
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
@@ -108,6 +110,24 @@ public class HRManagementDbContext :
                 b.ConfigureByConvention();
                 b.Property(x => x.Department).HasColumnName(nameof(HRManager.Department)).HasMaxLength(HRManagerConsts.DepartmentMaxLength);
                 b.Property(x => x.HRNumber).HasColumnName(nameof(HRManager.HRNumber)).HasMaxLength(HRManagerConsts.HRNumberMaxLength);
+                b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
+            });
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<Employee>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "Employees", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.EmployeeNumber).HasColumnName(nameof(Employee.EmployeeNumber)).HasMaxLength(EmployeeConsts.EmployeeNumberMaxLength);
+                b.Property(x => x.DateOfJoining).HasColumnName(nameof(Employee.DateOfJoining));
+                b.Property(x => x.LeaveBalance).HasColumnName(nameof(Employee.LeaveBalance)).HasMaxLength((int)EmployeeConsts.LeaveBalanceMaxLength);
+                b.Property(x => x.BaseSalary).HasColumnName(nameof(Employee.BaseSalary));
                 b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
             });
 

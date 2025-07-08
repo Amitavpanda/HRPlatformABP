@@ -21,6 +21,11 @@ public class HRManagementPermissionDefinitionProvider : PermissionDefinitionProv
         hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Create, L("Permission:Create"));
         hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Edit, L("Permission:Edit"));
         hRManagerPermission.AddChild(HRManagementPermissions.HRManagers.Delete, L("Permission:Delete"));
+
+        var employeePermission = myGroup.AddPermission(HRManagementPermissions.Employees.Default, L("Permission:Employees"));
+        employeePermission.AddChild(HRManagementPermissions.Employees.Create, L("Permission:Create"));
+        employeePermission.AddChild(HRManagementPermissions.Employees.Edit, L("Permission:Edit"));
+        employeePermission.AddChild(HRManagementPermissions.Employees.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

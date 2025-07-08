@@ -1,3 +1,4 @@
+using HRManagement.Employees;
 using HRManagement.HRManagers;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,8 @@ public class HRManagementEntityFrameworkCoreModule : AbpModule
              * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
             options.AddRepository<HRManager, HRManagers.EfCoreHRManagerRepository>();
+
+            options.AddRepository<Employee, Employees.EfCoreEmployeeRepository>();
 
         });
 

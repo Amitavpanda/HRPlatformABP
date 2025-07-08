@@ -1,3 +1,4 @@
+using HRManagement.Employees;
 using System;
 using HRManagement.Shared;
 using Volo.Abp.Identity;
@@ -19,5 +20,9 @@ public class HRManagementApplicationAutoMapperProfile : Profile
         CreateMap<HRManager, HRManagerExcelDto>();
         CreateMap<HRManagerWithNavigationProperties, HRManagerWithNavigationPropertiesDto>();
         CreateMap<IdentityUser, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
+
+        CreateMap<Employee, EmployeeDto>();
+        CreateMap<Employee, EmployeeExcelDto>();
+        CreateMap<EmployeeWithNavigationProperties, EmployeeWithNavigationPropertiesDto>();
     }
 }

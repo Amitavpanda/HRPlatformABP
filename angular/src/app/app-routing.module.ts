@@ -69,6 +69,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./hrmanagers/hrmanager/hrmanager.module').then(m => m.HRManagerModule),
   },
+  {
+    path: 'employees',
+    loadChildren: () => import('./employees/employee/employee.module').then(m => m.EmployeeModule),
+  },
 ];
 
 @NgModule({

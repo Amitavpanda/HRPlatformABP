@@ -29,6 +29,7 @@ import {
   provideAbpThemeShared,
 } from '@abp/ng.theme.shared';
 import { HRMANAGERS_HRMANAGER_ROUTE_PROVIDER } from './hrmanagers/hrmanager/providers/hrmanager-route.provider';
+import { EMPLOYEES_EMPLOYEE_ROUTE_PROVIDER } from './employees/employee/providers/employee-route.provider';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -74,6 +75,7 @@ import { HRMANAGERS_HRMANAGER_ROUTE_PROVIDER } from './hrmanagers/hrmanager/prov
       }),
     ),
     HRMANAGERS_HRMANAGER_ROUTE_PROVIDER,
+    EMPLOYEES_EMPLOYEE_ROUTE_PROVIDER,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
