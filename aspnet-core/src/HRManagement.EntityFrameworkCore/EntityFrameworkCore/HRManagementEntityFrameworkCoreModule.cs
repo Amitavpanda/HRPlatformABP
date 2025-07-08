@@ -1,3 +1,4 @@
+using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
 using HRManagement.HRManagers;
 using System;
@@ -54,6 +55,8 @@ public class HRManagementEntityFrameworkCoreModule : AbpModule
             options.AddRepository<HRManager, HRManagers.EfCoreHRManagerRepository>();
 
             options.AddRepository<Employee, Employees.EfCoreEmployeeRepository>();
+
+            options.AddRepository<AttendanceLog, AttendanceLogs.EfCoreAttendanceLogRepository>();
 
         });
 

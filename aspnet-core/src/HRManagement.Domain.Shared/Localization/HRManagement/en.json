@@ -88,6 +88,26 @@
     "MaxEmployeeNumber": "Max Employee Number",
     "MaxDateOfJoining": "Max Date Of Joining",
     "MaxLeaveBalance": "Max Leave Balance",
-    "MaxBaseSalary": "Max Base Salary"
+    "MaxBaseSalary": "Max Base Salary",
+    "Enum:AttendanceStatus.0": "Present",
+    "Enum:AttendanceStatus.1": "Absent",
+    "Enum:AttendanceStatus.2": "On leave",
+    "Enum:AttendanceStatus.3": "Half day",
+    "Permission:AttendanceLogs": "Attendance Logs",
+    "AttendanceLogs": "Attendance Logs",
+    "NewAttendanceLog": "New Attendance Log",
+    "AttendanceLog": "Attendance Log",
+    "Menu:AttendanceLogs": "Attendance Logs",
+    "CheckInTime": "Check In Time",
+    "CheckOutTime": "Check Out Time",
+    "Status": "Status",
+    "MinDate": "Min Date",
+    "MinCheckInTime": "Min Check In Time",
+    "MinCheckOutTime": "Min Check Out Time",
+    "MinStatus": "Min Status",
+    "MaxDate": "Max Date",
+    "MaxCheckInTime": "Max Check In Time",
+    "MaxCheckOutTime": "Max Check Out Time",
+    "MaxStatus": "Max Status"
   }
 }

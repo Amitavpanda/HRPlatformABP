@@ -29,4 +29,12 @@ public static class HRManagementPermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public static class AttendanceLogs
+    {
+        public const string Default = GroupName + ".AttendanceLogs";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

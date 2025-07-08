@@ -1,0 +1,429 @@
+<abp-page [title]="title | abpLocalization">
+  <abp-page-toolbar-container class="col">
+    <!--<suite-custom-code-block-0>-->
+    <!--</suite-custom-code-block-0>-->
+    <div class="text-lg-end pt-2">
+      <!--<suite-custom-code-block-1>-->
+      <!--</suite-custom-code-block-1>-->
+
+      <button
+        class="btn btn-primary btn-sm mx-2"
+        type="button"
+        [disabled]="service.isExportToExcelBusy"
+        (click)="exportToExcel()"
+      >
+        {{ '::ExportToExcel' | abpLocalization }}
+      </button>
+
+      <button
+        *abpPermission="'HRManagement.AttendanceLogs.Create'"
+        class="btn btn-primary btn-sm"
+        type="button"
+        (click)="create()"
+      >
+        <i class="fa fa-plus me-1" aria-hidden="true"></i>
+        {{ '::NewAttendanceLog' | abpLocalization }}
+      </button>
+      <!--<suite-custom-code-block-2>-->
+      <!--</suite-custom-code-block-2>-->
+    </div>
+  </abp-page-toolbar-container>
+
+  <abp-advanced-entity-filters localizationSourceName="" [list]="list">
+    @if (service.filters; as filters) {
+      <abp-advanced-entity-filters-form>
+        <form #filterForm (keyup.enter)="list.get()">
+          <!--<suite-custom-code-block-3>-->
+          <!--</suite-custom-code-block-3>-->
+          <div class="row">
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minDate">
+                  {{ '::MinDate' | abpLocalization }}
+                </label>
+
+                <div class="input-group" validationTarget>
+                  <input
+                    id="minDate"
+                    class="form-control"
+                    #minDateInput
+                    #minDateDatepicker="ngbDatepicker"
+                    name="minDate"
+                    ngbDatepicker
+                    container="body"
+                    readonly
+                    (click)="minDateDatepicker.toggle()"
+                    (keyup.space)="minDateDatepicker.toggle()"
+                    [(ngModel)]="filters.dateMin"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  @if (minDateInput.value) {
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-link px-2"
+                        type="button"
+                        [title]="'AbpUi::Clear' | abpLocalization"
+                        (click)="
+                          minDateDatepicker.writeValue(null);
+                          minDateDatepicker.manualDateChange(null, true)
+                        "
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxDate">
+                  {{ '::MaxDate' | abpLocalization }}
+                </label>
+
+                <div class="input-group" validationTarget>
+                  <input
+                    id="maxDate"
+                    class="form-control"
+                    #maxDateInput
+                    #maxDateDatepicker="ngbDatepicker"
+                    name="maxDate"
+                    ngbDatepicker
+                    readonly
+                    (click)="maxDateDatepicker.toggle()"
+                    (keyup.space)="maxDateDatepicker.toggle()"
+                    [(ngModel)]="filters.dateMax"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  @if (maxDateInput.value) {
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-link px-2"
+                        type="button"
+                        [title]="'AbpUi::Clear' | abpLocalization"
+                        (click)="
+                          maxDateDatepicker.writeValue(null);
+                          maxDateDatepicker.manualDateChange(null, true)
+                        "
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minCheckInTime">
+                  {{ '::MinCheckInTime' | abpLocalization }}
+                </label>
+
+                <ngb-timepicker
+                  id="minCheckInTime"
+                  name="minCheckInTime"
+                  [(ngModel)]="filters.checkInTimeMin"
+                  [ngModelOptions]="{ standalone: true }"
+                  [spinners]="false"
+                  [meridian]="true"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxCheckInTime">
+                  {{ '::MaxCheckInTime' | abpLocalization }}
+                </label>
+
+                <ngb-timepicker
+                  id="maxCheckInTime"
+                  name="maxCheckInTime"
+                  [(ngModel)]="filters.checkInTimeMax"
+                  [ngModelOptions]="{ standalone: true }"
+                  [spinners]="false"
+                  [meridian]="true"
+                >
+                </ngb-timepicker>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minCheckOutTime">
+                  {{ '::MinCheckOutTime' | abpLocalization }}
+                </label>
+
+                <ngb-timepicker
+                  id="minCheckOutTime"
+                  name="minCheckOutTime"
+                  [(ngModel)]="filters.checkOutTimeMin"
+                  [ngModelOptions]="{ standalone: true }"
+                  [spinners]="false"
+                  [meridian]="true"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxCheckOutTime">
+                  {{ '::MaxCheckOutTime' | abpLocalization }}
+                </label>
+
+                <ngb-timepicker
+                  id="maxCheckOutTime"
+                  name="maxCheckOutTime"
+                  [(ngModel)]="filters.checkOutTimeMax"
+                  [ngModelOptions]="{ standalone: true }"
+                  [spinners]="false"
+                  [meridian]="true"
+                >
+                </ngb-timepicker>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="statusFilter">
+                  {{ '::Status' | abpLocalization }}
+                </label>
+
+                <select
+                  id="statusFilter"
+                  class="form-select form-control"
+                  [(ngModel)]="filters.status"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option [ngValue]="null"></option>
+                  <option
+                    *ngFor="let option of attendanceStatusOptions; trackBy: track.by('value')"
+                    [ngValue]="option.value"
+                  >
+                    {{ '::Enum:AttendanceStatus.' + option.value | abpLocalization }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="employeeIdFilter">
+                  {{ '::Employee' | abpLocalization }}
+                </label>
+                <abp-lookup-select
+                  cid="employeeIdFilter"
+                  [getFn]="serviceDetail.getEmployeeLookup"
+                  [(ngModel)]="filters.employeeId"
+                  [ngModelOptions]="{ standalone: true }"
+                ></abp-lookup-select>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto align-self-end mb-3">
+              <div class="row">
+                <div class="col-6 col-sm-auto d-grid">
+                  <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                    <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+                  </button>
+                </div>
+                <div class="col-6 col-sm-auto d-grid">
+                  <button type="button" class="btn btn-primary" (click)="list.get()">
+                    <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--<suite-custom-code-block-4>-->
+          <!--</suite-custom-code-block-4>-->
+        </form>
+      </abp-advanced-entity-filters-form>
+    }
+  </abp-advanced-entity-filters>
+  <!--<suite-custom-code-block-5>-->
+  <!--</suite-custom-code-block-5>-->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      @if (service.selectedCount() > 0) {
+        <h4 class="card-title">
+          {{
+            '::AllItemsAreSelected'
+              | abpLocalization
+                : (service.allSelected() ? service.data.totalCount : service.selectedCount())
+          }}
+        </h4>
+
+        <div>
+          <button class="btn btn-outline-primary btn-sm" (click)="service.selectAll()">
+            @if (service.allSelected()) {
+              {{ '::ClearSelection' | abpLocalization }}
+            } @else {
+              {{ '::SelectAllItems' | abpLocalization: service.data.totalCount }}
+            }
+          </button>
+
+          <button
+            *abpPermission="'HRManagement.AttendanceLogs.Delete'"
+            class="btn btn-danger btn-sm mx-1"
+            (click)="service.bulkDelete()"
+          >
+            <i class="fa fa-trash me-1" aria-hidden="true"></i>
+            {{ 'AbpUi::Delete' | abpLocalization: service.selectedCount() }}
+          </button>
+        </div>
+      }
+    </div>
+
+    <!--<suite-custom-code-block-6>-->
+    <!--</suite-custom-code-block-6>-->
+    <div class="card-body">
+      <!--<suite-custom-code-block-7>-->
+      <!--</suite-custom-code-block-7>-->
+      <ngx-datatable
+        default
+        [rows]="service.data.items"
+        [count]="service.data.totalCount"
+        [list]="list"
+        [selected]="service.selected()"
+        [selectionType]="service.selectionType.checkbox"
+        (select)="service.onSelect($event)"
+      >
+        <!--<suite-custom-code-block-8>-->
+        <!--</suite-custom-code-block-8>-->
+
+        <ngx-datatable-column
+          [width]="40"
+          [sortable]="false"
+          [canAutoResize]="false"
+          [draggable]="false"
+          [resizeable]="false"
+        >
+          <ng-template
+            ngx-datatable-header-template
+            let-value="value"
+            let-allRowsSelected="allRowsSelected"
+            let-selectFn="selectFn"
+          >
+            @if (service.data.items.length > 0) {
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [checked]="allRowsSelected"
+                (change)="selectFn(!allRowsSelected)"
+              />
+            }
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-value="value"
+            let-isSelected="isSelected"
+            let-onCheckboxChangeFn="onCheckboxChangeFn"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [checked]="isSelected"
+              (change)="onCheckboxChangeFn($event)"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+
+        @if (isActionButtonVisible) {
+          <ngx-datatable-column
+            [name]="'AbpUi::Actions' | abpLocalization"
+            [maxWidth]="150"
+            [width]="150"
+            [sortable]="false"
+          >
+            <ng-template let-row="row" let-i="rowIndex" ngx-datatable-cell-template>
+              <div ngbDropdown container="body" class="d-inline-block">
+                <button
+                  class="btn btn-primary btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  ngbDropdownToggle
+                >
+                  <i class="fa fa-cog me-1" aria-hidden="true"></i>
+                  {{ 'AbpUi::Actions' | abpLocalization }}
+                </button>
+
+                <div ngbDropdownMenu>
+                  <button
+                    ngbDropdownItem
+                    *abpPermission="'HRManagement.AttendanceLogs.Edit'"
+                    (click)="update(row)"
+                  >
+                    {{ 'AbpUi::Edit' | abpLocalization }}
+                  </button>
+
+                  <button
+                    ngbDropdownItem
+                    *abpPermission="'HRManagement.AttendanceLogs.Delete'"
+                    (click)="delete(row)"
+                  >
+                    {{ 'AbpUi::Delete' | abpLocalization }}
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+        <ngx-datatable-column name="{{ '::Date' | abpLocalization }}" prop="attendanceLog.date">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.attendanceLog.date | abpUtcToLocal: 'date' }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::CheckInTime' | abpLocalization }}"
+          prop="attendanceLog.checkInTime"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.attendanceLog.checkInTime }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::CheckOutTime' | abpLocalization }}"
+          prop="attendanceLog.checkOutTime"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.attendanceLog.checkOutTime }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ '::Status' | abpLocalization }}" prop="attendanceLog.status">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{
+              row.attendanceLog.status !== null
+                ? ('::Enum:AttendanceStatus.' + row.attendanceLog.status | abpLocalization)
+                : ''
+            }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::Employee' | abpLocalization }}"
+          prop="employee.employeeNumber"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.employee?.employeeNumber }}
+          </ng-template>
+        </ngx-datatable-column>
+        <!--<suite-custom-code-block-9>-->
+        <!--</suite-custom-code-block-9>-->
+      </ngx-datatable>
+      <!--<suite-custom-code-block-10>-->
+      <!--</suite-custom-code-block-10>-->
+    </div>
+  </div>
+  <!--<suite-custom-code-block-11>-->
+  <!--</suite-custom-code-block-11>-->
+</abp-page>
+<!--<suite-custom-code-block-12>-->
+<!--</suite-custom-code-block-12>-->
+
+@defer (when serviceDetail.isVisible) {
+  @if (serviceDetail.isVisible) {
+    <app-attendance-log-detail-modal />
+  }
+}

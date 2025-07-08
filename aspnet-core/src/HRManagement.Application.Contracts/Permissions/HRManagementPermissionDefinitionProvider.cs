@@ -26,6 +26,11 @@ public class HRManagementPermissionDefinitionProvider : PermissionDefinitionProv
         employeePermission.AddChild(HRManagementPermissions.Employees.Create, L("Permission:Create"));
         employeePermission.AddChild(HRManagementPermissions.Employees.Edit, L("Permission:Edit"));
         employeePermission.AddChild(HRManagementPermissions.Employees.Delete, L("Permission:Delete"));
+
+        var attendanceLogPermission = myGroup.AddPermission(HRManagementPermissions.AttendanceLogs.Default, L("Permission:AttendanceLogs"));
+        attendanceLogPermission.AddChild(HRManagementPermissions.AttendanceLogs.Create, L("Permission:Create"));
+        attendanceLogPermission.AddChild(HRManagementPermissions.AttendanceLogs.Edit, L("Permission:Edit"));
+        attendanceLogPermission.AddChild(HRManagementPermissions.AttendanceLogs.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

@@ -1,3 +1,4 @@
+using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
 using System;
 using HRManagement.Shared;
@@ -24,5 +25,10 @@ public class HRManagementApplicationAutoMapperProfile : Profile
         CreateMap<Employee, EmployeeDto>();
         CreateMap<Employee, EmployeeExcelDto>();
         CreateMap<EmployeeWithNavigationProperties, EmployeeWithNavigationPropertiesDto>();
+
+        CreateMap<AttendanceLog, AttendanceLogDto>();
+        CreateMap<AttendanceLog, AttendanceLogExcelDto>();
+        CreateMap<AttendanceLogWithNavigationProperties, AttendanceLogWithNavigationPropertiesDto>();
+        CreateMap<Employee, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.EmployeeNumber));
     }
 }

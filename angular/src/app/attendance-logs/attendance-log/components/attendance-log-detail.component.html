@@ -1,0 +1,155 @@
+<abp-modal [busy]="service.isBusy" [(visible)]="service.isVisible">
+  <ng-template #abpHeader>
+    <!--<suite-custom-code-block-0>-->
+    <!--</suite-custom-code-block-0>-->
+    <h3>
+      <!--<suite-custom-code-block-1>-->
+      <!--</suite-custom-code-block-1>-->
+      {{ (service.selected ? 'AbpUi::Edit' : '::NewAttendanceLog') | abpLocalization }}
+      <!--<suite-custom-code-block-2>-->
+      <!--</suite-custom-code-block-2>-->
+    </h3>
+    <!--<suite-custom-code-block-3>-->
+    <!--</suite-custom-code-block-3>-->
+  </ng-template>
+
+  <ng-template #abpBody>
+    <!--<suite-custom-code-block-4>-->
+    <!--</suite-custom-code-block-4>-->
+    <form
+      [formGroup]="service.form"
+      id="attendance-log"
+      (ngSubmit)="service.submitForm()"
+      validateOnSubmit
+    >
+      <!--<suite-custom-code-block-5>-->
+      <!--</suite-custom-code-block-5>-->
+
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a ngbNavLink>
+            {{ '::AttendanceLog' | abpLocalization }}
+          </a>
+          <ng-template ngbNavContent>
+            <div class="mt-2 fade-in-top">
+              <div class="mb-3">
+                <label class="form-label" for="attendance-log-date">
+                  {{ '::Date' | abpLocalization }} *
+                </label>
+
+                <div class="input-group" validationTarget>
+                  <input
+                    readonly
+                    id="attendance-log-date"
+                    formControlName="date"
+                    class="form-control"
+                    ngbDatepicker
+                    #dateInput
+                    #dateDatepicker="ngbDatepicker"
+                    (click)="dateDatepicker.open()"
+                    (keyup.space)="dateDatepicker.open()"
+                    autofocus
+                  />
+                  @if (dateInput.value) {
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-link px-2"
+                        type="button"
+                        [title]="'AbpUi::Clear' | abpLocalization"
+                        (click)="
+                          dateDatepicker.writeValue(null);
+                          dateDatepicker.manualDateChange(null, true)
+                        "
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="attendance-log-check-in-time">
+                  {{ '::CheckInTime' | abpLocalization }} *
+                </label>
+
+                <ngb-timepicker
+                  id="attendance-log-check-in-time"
+                  formControlName="checkInTime"
+                  [spinners]="false"
+                  [meridian]="true"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="attendance-log-check-out-time">
+                  {{ '::CheckOutTime' | abpLocalization }} *
+                </label>
+
+                <ngb-timepicker
+                  id="attendance-log-check-out-time"
+                  formControlName="checkOutTime"
+                  [spinners]="false"
+                  [meridian]="true"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="attendance-log-status">
+                  {{ '::Status' | abpLocalization }} *
+                </label>
+
+                <select
+                  id="attendance-log-status"
+                  formControlName="status"
+                  class="form-select form-control"
+                >
+                  <option [ngValue]="null"></option>
+                  <option
+                    *ngFor="
+                      let option of service.attendanceStatusOptions;
+                      trackBy: service.track.by('key')
+                    "
+                    [ngValue]="option.value"
+                  >
+                    {{ '::Enum:AttendanceStatus.' + option.value | abpLocalization }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="attendance-log-employee-id">
+                  {{ '::Employee' | abpLocalization }} *
+                </label>
+                <abp-lookup-select
+                  cid="attendance-log-employee-id"
+                  formControlName="employeeId"
+                  [getFn]="service.getEmployeeLookup"
+                ></abp-lookup-select>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+
+      <!--<suite-custom-code-block-6>-->
+      <!--</suite-custom-code-block-6>-->
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <!--<suite-custom-code-block-7>-->
+    <!--</suite-custom-code-block-7>-->
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <!--<suite-custom-code-block-8>-->
+    <!--</suite-custom-code-block-8>-->
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="attendance-log">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+    <!--<suite-custom-code-block-9>-->
+    <!--</suite-custom-code-block-9>-->
+  </ng-template>
+</abp-modal>

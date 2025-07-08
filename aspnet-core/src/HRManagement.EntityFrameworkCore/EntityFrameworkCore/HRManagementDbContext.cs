@@ -1,3 +1,4 @@
+using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
 using HRManagement.HRManagers;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -31,6 +32,7 @@ public class HRManagementDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<AttendanceLog> AttendanceLogs { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<HRManager> HRManagers { get; set; } = null!;
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
@@ -129,6 +131,20 @@ public class HRManagementDbContext :
                 b.Property(x => x.LeaveBalance).HasColumnName(nameof(Employee.LeaveBalance)).HasMaxLength((int)EmployeeConsts.LeaveBalanceMaxLength);
                 b.Property(x => x.BaseSalary).HasColumnName(nameof(Employee.BaseSalary));
                 b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
+            });
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<AttendanceLog>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "AttendanceLogs", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.Date).HasColumnName(nameof(AttendanceLog.Date));
+                b.Property(x => x.CheckInTime).HasColumnName(nameof(AttendanceLog.CheckInTime));
+                b.Property(x => x.CheckOutTime).HasColumnName(nameof(AttendanceLog.CheckOutTime));
+                b.Property(x => x.Status).HasColumnName(nameof(AttendanceLog.Status));
+                b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
             });
 
         }
