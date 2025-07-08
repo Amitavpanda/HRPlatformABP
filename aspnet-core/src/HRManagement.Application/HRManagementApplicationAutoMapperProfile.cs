@@ -1,3 +1,4 @@
+using HRManagement.LeaveRequests;
 using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
 using System;
@@ -30,5 +31,9 @@ public class HRManagementApplicationAutoMapperProfile : Profile
         CreateMap<AttendanceLog, AttendanceLogExcelDto>();
         CreateMap<AttendanceLogWithNavigationProperties, AttendanceLogWithNavigationPropertiesDto>();
         CreateMap<Employee, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.EmployeeNumber));
+
+        CreateMap<LeaveRequest, LeaveRequestDto>();
+        CreateMap<LeaveRequest, LeaveRequestExcelDto>();
+        CreateMap<LeaveRequestWithNavigationProperties, LeaveRequestWithNavigationPropertiesDto>();
     }
 }

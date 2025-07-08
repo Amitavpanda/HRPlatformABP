@@ -1,3 +1,4 @@
+using HRManagement.LeaveRequests;
 using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
 using HRManagement.HRManagers;
@@ -32,6 +33,7 @@ public class HRManagementDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<LeaveRequest> LeaveRequests { get; set; } = null!;
     public DbSet<AttendanceLog> AttendanceLogs { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<HRManager> HRManagers { get; set; } = null!;
@@ -145,6 +147,24 @@ public class HRManagementDbContext :
                 b.Property(x => x.CheckOutTime).HasColumnName(nameof(AttendanceLog.CheckOutTime));
                 b.Property(x => x.Status).HasColumnName(nameof(AttendanceLog.Status));
                 b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
+            });
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<LeaveRequest>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "LeaveRequests", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.LeaveRequestType).HasColumnName(nameof(LeaveRequest.LeaveRequestType));
+                b.Property(x => x.StartDate).HasColumnName(nameof(LeaveRequest.StartDate));
+                b.Property(x => x.EndDate).HasColumnName(nameof(LeaveRequest.EndDate));
+                b.Property(x => x.LeaveRequestStatus).HasColumnName(nameof(LeaveRequest.LeaveRequestStatus));
+                b.Property(x => x.RequestedOn).HasColumnName(nameof(LeaveRequest.RequestedOn));
+                b.Property(x => x.ReviewedOn).HasColumnName(nameof(LeaveRequest.ReviewedOn));
+                b.Property(x => x.WorkflowInstanceId).HasColumnName(nameof(LeaveRequest.WorkflowInstanceId)).HasMaxLength(LeaveRequestConsts.WorkflowInstanceIdMaxLength);
+                b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
+                b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.ReviewedBy).OnDelete(DeleteBehavior.SetNull);
             });
 
         }

@@ -80,6 +80,11 @@ const routes: Routes = [
         m => m.AttendanceLogModule,
       ),
   },
+  {
+    path: 'leave-requests',
+    loadChildren: () =>
+      import('./leave-requests/leave-request/leave-request.module').then(m => m.LeaveRequestModule),
+  },
 ];
 
 @NgModule({
