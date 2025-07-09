@@ -47,6 +47,14 @@ namespace HRManagement.Controllers.Employees
             return _employeesAppService.GetAsync(id);
         }
 
+
+        [HttpGet]
+        [Route("by-identity-user-id")]
+        public virtual Task<EmployeeDto> GetByIdentityUserIdAsync([FromQuery] Guid identityUserId)
+        {
+            return _employeesAppService.GetByIdentityUserIdAsync(identityUserId);
+        }
+
         [HttpGet]
         [Route("identity-user-lookup")]
         public virtual Task<PagedResultDto<LookupDto<Guid>>> GetIdentityUserLookupAsync(LookupRequestDto input)

@@ -1,3 +1,4 @@
+using HRManagement.PayrollRecords;
 using HRManagement.LeaveRequests;
 using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
@@ -60,6 +61,8 @@ public class HRManagementEntityFrameworkCoreModule : AbpModule
             options.AddRepository<AttendanceLog, AttendanceLogs.EfCoreAttendanceLogRepository>();
 
             options.AddRepository<LeaveRequest, LeaveRequests.EfCoreLeaveRequestRepository>();
+
+            options.AddRepository<PayrollRecord, PayrollRecords.EfCorePayrollRecordRepository>();
 
         });
 

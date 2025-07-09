@@ -85,6 +85,20 @@ const routes: Routes = [
     loadChildren: () =>
       import('./leave-requests/leave-request/leave-request.module').then(m => m.LeaveRequestModule),
   },
+  {
+    path: 'payroll-records',
+    loadChildren: () =>
+      import('./payroll-records/payroll-record/payroll-record.module').then(
+        m => m.PayrollRecordModule,
+      ),
+  },
+  {
+    path: 'attendance',
+    loadChildren: () =>
+      import('./attendance-logs/attendance-logs-employee.module').then(
+        m => m.AttendanceLogEmployeesModule
+      ),
+  },
 ];
 
 @NgModule({

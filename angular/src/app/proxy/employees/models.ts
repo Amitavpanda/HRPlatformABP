@@ -10,6 +10,7 @@ export interface EmployeeCreateDto {
 }
 
 export interface EmployeeDto extends FullAuditedEntityDto<string> {
+  items: any;
   employeeNumber?: string;
   dateOfJoining?: string;
   leaveBalance: number;

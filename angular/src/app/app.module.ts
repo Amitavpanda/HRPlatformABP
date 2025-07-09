@@ -32,6 +32,7 @@ import { HRMANAGERS_HRMANAGER_ROUTE_PROVIDER } from './hrmanagers/hrmanager/prov
 import { EMPLOYEES_EMPLOYEE_ROUTE_PROVIDER } from './employees/employee/providers/employee-route.provider';
 import { ATTENDANCE_LOGS_ATTENDANCE_LOG_ROUTE_PROVIDER } from './attendance-logs/attendance-log/providers/attendance-log-route.provider';
 import { LEAVE_REQUESTS_LEAVE_REQUEST_ROUTE_PROVIDER } from './leave-requests/leave-request/providers/leave-request-route.provider';
+import { PAYROLL_RECORDS_PAYROLL_RECORD_ROUTE_PROVIDER } from './payroll-records/payroll-record/providers/payroll-record-route.provider';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -80,6 +81,7 @@ import { LEAVE_REQUESTS_LEAVE_REQUEST_ROUTE_PROVIDER } from './leave-requests/le
     EMPLOYEES_EMPLOYEE_ROUTE_PROVIDER,
     ATTENDANCE_LOGS_ATTENDANCE_LOG_ROUTE_PROVIDER,
     LEAVE_REQUESTS_LEAVE_REQUEST_ROUTE_PROVIDER,
+    PAYROLL_RECORDS_PAYROLL_RECORD_ROUTE_PROVIDER,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

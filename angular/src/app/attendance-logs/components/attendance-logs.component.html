@@ -1,0 +1,38 @@
+<div class="attendance-logs">
+  <h2>Attendances Logs</h2>
+
+  <div class="user-info">
+    <p><strong>User ID:</strong> {{ userId }}</p>
+    <p><strong>User Name:</strong> {{ userName }}</p>
+    <p><strong>Employee ID:</strong> {{ employeeId }}</p>
+  </div>
+
+  <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="date">Date:</label>
+      <input id="date" type="date" formControlName="date" />
+    </div>
+
+    <div>
+      <label for="checkInTime">Check-In Time:</label>
+      <input id="checkInTime" type="time" formControlName="checkInTime" />
+    </div>
+
+    <div>
+      <label for="checkOutTime">Check-Out Time:</label>
+      <input id="checkOutTime" type="time" formControlName="checkOutTime" />
+    </div>
+
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" formControlName="status">
+        <option value="present">Present</option>
+        <option value="absent">Absent</option>
+        <option value="onLeave">On Leave</option>
+        <option value="halfDayLeave">Half Day Leave</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="!attendanceForm.valid">Submit</button>
+  </form>
+</div>

@@ -1,0 +1,173 @@
+<abp-modal [busy]="service.isBusy" [(visible)]="service.isVisible">
+  <ng-template #abpHeader>
+    <!--<suite-custom-code-block-0>-->
+    <!--</suite-custom-code-block-0>-->
+    <h3>
+      <!--<suite-custom-code-block-1>-->
+      <!--</suite-custom-code-block-1>-->
+      {{ (service.selected ? 'AbpUi::Edit' : '::NewPayrollRecord') | abpLocalization }}
+      <!--<suite-custom-code-block-2>-->
+      <!--</suite-custom-code-block-2>-->
+    </h3>
+    <!--<suite-custom-code-block-3>-->
+    <!--</suite-custom-code-block-3>-->
+  </ng-template>
+
+  <ng-template #abpBody>
+    <!--<suite-custom-code-block-4>-->
+    <!--</suite-custom-code-block-4>-->
+    <form
+      [formGroup]="service.form"
+      id="payroll-record"
+      (ngSubmit)="service.submitForm()"
+      validateOnSubmit
+    >
+      <!--<suite-custom-code-block-5>-->
+      <!--</suite-custom-code-block-5>-->
+
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a ngbNavLink>
+            {{ '::PayrollRecord' | abpLocalization }}
+          </a>
+          <ng-template ngbNavContent>
+            <div class="mt-2 fade-in-top">
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-month">
+                  {{ '::Month' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="payroll-record-month"
+                  formControlName="month"
+                  class="form-control"
+                  max="13"
+                  autofocus
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-year">
+                  {{ '::Year' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="payroll-record-year"
+                  formControlName="year"
+                  class="form-control"
+                  max="10000"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-base-salary">
+                  {{ '::BaseSalary' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="payroll-record-base-salary"
+                  formControlName="baseSalary"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-leave-deductions">
+                  {{ '::LeaveDeductions' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="payroll-record-leave-deductions"
+                  formControlName="leaveDeductions"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-net-pay">
+                  {{ '::NetPay' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="payroll-record-net-pay"
+                  formControlName="netPay"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-status">
+                  {{ '::Status' | abpLocalization }} *
+                </label>
+
+                <select
+                  id="payroll-record-status"
+                  formControlName="status"
+                  class="form-select form-control"
+                >
+                  <option [ngValue]="null"></option>
+                  <option
+                    *ngFor="
+                      let option of service.payrollRecordStatusOptions;
+                      trackBy: service.track.by('key')
+                    "
+                    [ngValue]="option.value"
+                  >
+                    {{ '::Enum:PayrollRecordStatus.' + option.value | abpLocalization }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-payslip-url">
+                  {{ '::PayslipUrl' | abpLocalization }}
+                </label>
+
+                <input
+                  id="payroll-record-payslip-url"
+                  formControlName="payslipUrl"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="payroll-record-employee-id">
+                  {{ '::Employee' | abpLocalization }} *
+                </label>
+                <abp-lookup-select
+                  cid="payroll-record-employee-id"
+                  formControlName="employeeId"
+                  [getFn]="service.getEmployeeLookup"
+                ></abp-lookup-select>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+
+      <!--<suite-custom-code-block-6>-->
+      <!--</suite-custom-code-block-6>-->
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <!--<suite-custom-code-block-7>-->
+    <!--</suite-custom-code-block-7>-->
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <!--<suite-custom-code-block-8>-->
+    <!--</suite-custom-code-block-8>-->
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="payroll-record">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+    <!--<suite-custom-code-block-9>-->
+    <!--</suite-custom-code-block-9>-->
+  </ng-template>
+</abp-modal>

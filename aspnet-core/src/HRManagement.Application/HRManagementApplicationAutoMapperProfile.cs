@@ -1,3 +1,4 @@
+using HRManagement.PayrollRecords;
 using HRManagement.LeaveRequests;
 using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
@@ -35,5 +36,9 @@ public class HRManagementApplicationAutoMapperProfile : Profile
         CreateMap<LeaveRequest, LeaveRequestDto>();
         CreateMap<LeaveRequest, LeaveRequestExcelDto>();
         CreateMap<LeaveRequestWithNavigationProperties, LeaveRequestWithNavigationPropertiesDto>();
+
+        CreateMap<PayrollRecord, PayrollRecordDto>();
+        CreateMap<PayrollRecord, PayrollRecordExcelDto>();
+        CreateMap<PayrollRecordWithNavigationProperties, PayrollRecordWithNavigationPropertiesDto>();
     }
 }

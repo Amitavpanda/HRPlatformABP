@@ -1,0 +1,473 @@
+<abp-page [title]="title | abpLocalization">
+  <abp-page-toolbar-container class="col">
+    <!--<suite-custom-code-block-0>-->
+    <!--</suite-custom-code-block-0>-->
+    <div class="text-lg-end pt-2">
+      <!--<suite-custom-code-block-1>-->
+      <!--</suite-custom-code-block-1>-->
+
+      <button
+        class="btn btn-primary btn-sm mx-2"
+        type="button"
+        [disabled]="service.isExportToExcelBusy"
+        (click)="exportToExcel()"
+      >
+        {{ '::ExportToExcel' | abpLocalization }}
+      </button>
+
+      <button
+        *abpPermission="'HRManagement.PayrollRecords.Create'"
+        class="btn btn-primary btn-sm"
+        type="button"
+        (click)="create()"
+      >
+        <i class="fa fa-plus me-1" aria-hidden="true"></i>
+        {{ '::NewPayrollRecord' | abpLocalization }}
+      </button>
+      <!--<suite-custom-code-block-2>-->
+      <!--</suite-custom-code-block-2>-->
+    </div>
+  </abp-page-toolbar-container>
+
+  <abp-advanced-entity-filters localizationSourceName="" [list]="list">
+    @if (service.filters; as filters) {
+      <abp-advanced-entity-filters-form>
+        <form #filterForm (keyup.enter)="list.get()">
+          <!--<suite-custom-code-block-3>-->
+          <!--</suite-custom-code-block-3>-->
+          <div class="row">
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minMonth">
+                  {{ '::MinMonth' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minMonth"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.monthMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxMonth">
+                  {{ '::MaxMonth' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxMonth"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.monthMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minYear">
+                  {{ '::MinYear' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minYear"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.yearMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxYear">
+                  {{ '::MaxYear' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxYear"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.yearMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minBaseSalary">
+                  {{ '::MinBaseSalary' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minBaseSalary"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.baseSalaryMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxBaseSalary">
+                  {{ '::MaxBaseSalary' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxBaseSalary"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.baseSalaryMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minLeaveDeductions">
+                  {{ '::MinLeaveDeductions' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minLeaveDeductions"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.leaveDeductionsMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxLeaveDeductions">
+                  {{ '::MaxLeaveDeductions' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxLeaveDeductions"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.leaveDeductionsMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minNetPay">
+                  {{ '::MinNetPay' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minNetPay"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.netPayMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxNetPay">
+                  {{ '::MaxNetPay' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxNetPay"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.netPayMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="statusFilter">
+                  {{ '::Status' | abpLocalization }}
+                </label>
+
+                <select
+                  id="statusFilter"
+                  class="form-select form-control"
+                  [(ngModel)]="filters.status"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option [ngValue]="null"></option>
+                  <option
+                    *ngFor="let option of payrollRecordStatusOptions; trackBy: track.by('value')"
+                    [ngValue]="option.value"
+                  >
+                    {{ '::Enum:PayrollRecordStatus.' + option.value | abpLocalization }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="payslipUrlFilter">
+                  {{ '::PayslipUrl' | abpLocalization }}
+                </label>
+
+                <input
+                  id="payslipUrlFilter"
+                  class="form-control"
+                  [(ngModel)]="filters.payslipUrl"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="employeeIdFilter">
+                  {{ '::Employee' | abpLocalization }}
+                </label>
+                <abp-lookup-select
+                  cid="employeeIdFilter"
+                  [getFn]="serviceDetail.getEmployeeLookup"
+                  [(ngModel)]="filters.employeeId"
+                  [ngModelOptions]="{ standalone: true }"
+                ></abp-lookup-select>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto align-self-end mb-3">
+              <div class="row">
+                <div class="col-6 col-sm-auto d-grid">
+                  <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                    <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+                  </button>
+                </div>
+                <div class="col-6 col-sm-auto d-grid">
+                  <button type="button" class="btn btn-primary" (click)="list.get()">
+                    <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--<suite-custom-code-block-4>-->
+          <!--</suite-custom-code-block-4>-->
+        </form>
+      </abp-advanced-entity-filters-form>
+    }
+  </abp-advanced-entity-filters>
+  <!--<suite-custom-code-block-5>-->
+  <!--</suite-custom-code-block-5>-->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      @if (service.selectedCount() > 0) {
+        <h4 class="card-title">
+          {{
+            '::AllItemsAreSelected'
+              | abpLocalization
+                : (service.allSelected() ? service.data.totalCount : service.selectedCount())
+          }}
+        </h4>
+
+        <div>
+          <button class="btn btn-outline-primary btn-sm" (click)="service.selectAll()">
+            @if (service.allSelected()) {
+              {{ '::ClearSelection' | abpLocalization }}
+            } @else {
+              {{ '::SelectAllItems' | abpLocalization: service.data.totalCount }}
+            }
+          </button>
+
+          <button
+            *abpPermission="'HRManagement.PayrollRecords.Delete'"
+            class="btn btn-danger btn-sm mx-1"
+            (click)="service.bulkDelete()"
+          >
+            <i class="fa fa-trash me-1" aria-hidden="true"></i>
+            {{ 'AbpUi::Delete' | abpLocalization: service.selectedCount() }}
+          </button>
+        </div>
+      }
+    </div>
+
+    <!--<suite-custom-code-block-6>-->
+    <!--</suite-custom-code-block-6>-->
+    <div class="card-body">
+      <!--<suite-custom-code-block-7>-->
+      <!--</suite-custom-code-block-7>-->
+      <ngx-datatable
+        default
+        [rows]="service.data.items"
+        [count]="service.data.totalCount"
+        [list]="list"
+        [selected]="service.selected()"
+        [selectionType]="service.selectionType.checkbox"
+        (select)="service.onSelect($event)"
+      >
+        <!--<suite-custom-code-block-8>-->
+        <!--</suite-custom-code-block-8>-->
+
+        <ngx-datatable-column
+          [width]="40"
+          [sortable]="false"
+          [canAutoResize]="false"
+          [draggable]="false"
+          [resizeable]="false"
+        >
+          <ng-template
+            ngx-datatable-header-template
+            let-value="value"
+            let-allRowsSelected="allRowsSelected"
+            let-selectFn="selectFn"
+          >
+            @if (service.data.items.length > 0) {
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [checked]="allRowsSelected"
+                (change)="selectFn(!allRowsSelected)"
+              />
+            }
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-value="value"
+            let-isSelected="isSelected"
+            let-onCheckboxChangeFn="onCheckboxChangeFn"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [checked]="isSelected"
+              (change)="onCheckboxChangeFn($event)"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+
+        @if (isActionButtonVisible) {
+          <ngx-datatable-column
+            [name]="'AbpUi::Actions' | abpLocalization"
+            [maxWidth]="150"
+            [width]="150"
+            [sortable]="false"
+          >
+            <ng-template let-row="row" let-i="rowIndex" ngx-datatable-cell-template>
+              <div ngbDropdown container="body" class="d-inline-block">
+                <button
+                  class="btn btn-primary btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  ngbDropdownToggle
+                >
+                  <i class="fa fa-cog me-1" aria-hidden="true"></i>
+                  {{ 'AbpUi::Actions' | abpLocalization }}
+                </button>
+
+                <div ngbDropdownMenu>
+                  <button
+                    ngbDropdownItem
+                    *abpPermission="'HRManagement.PayrollRecords.Edit'"
+                    (click)="update(row)"
+                  >
+                    {{ 'AbpUi::Edit' | abpLocalization }}
+                  </button>
+
+                  <button
+                    ngbDropdownItem
+                    *abpPermission="'HRManagement.PayrollRecords.Delete'"
+                    (click)="delete(row)"
+                  >
+                    {{ 'AbpUi::Delete' | abpLocalization }}
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+        <ngx-datatable-column name="{{ '::Month' | abpLocalization }}" prop="payrollRecord.month">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.month }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ '::Year' | abpLocalization }}" prop="payrollRecord.year">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.year }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::BaseSalary' | abpLocalization }}"
+          prop="payrollRecord.baseSalary"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.baseSalary }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::LeaveDeductions' | abpLocalization }}"
+          prop="payrollRecord.leaveDeductions"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.leaveDeductions }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ '::NetPay' | abpLocalization }}" prop="payrollRecord.netPay">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.netPay }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ '::Status' | abpLocalization }}" prop="payrollRecord.status">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{
+              row.payrollRecord.status !== null
+                ? ('::Enum:PayrollRecordStatus.' + row.payrollRecord.status | abpLocalization)
+                : ''
+            }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::PayslipUrl' | abpLocalization }}"
+          prop="payrollRecord.payslipUrl"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.payrollRecord.payslipUrl }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::Employee' | abpLocalization }}"
+          prop="employee.employeeNumber"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.employee?.employeeNumber }}
+          </ng-template>
+        </ngx-datatable-column>
+        <!--<suite-custom-code-block-9>-->
+        <!--</suite-custom-code-block-9>-->
+      </ngx-datatable>
+      <!--<suite-custom-code-block-10>-->
+      <!--</suite-custom-code-block-10>-->
+    </div>
+  </div>
+  <!--<suite-custom-code-block-11>-->
+  <!--</suite-custom-code-block-11>-->
+</abp-page>
+<!--<suite-custom-code-block-12>-->
+<!--</suite-custom-code-block-12>-->
+
+@defer (when serviceDetail.isVisible) {
+  @if (serviceDetail.isVisible) {
+    <app-payroll-record-detail-modal />
+  }
+}

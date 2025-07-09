@@ -25,5 +25,13 @@ function configureRoutes() {
       layout: eLayoutType.application,
       requiredPolicy: 'HRManagement.Dashboard.Host  || HRManagement.Dashboard.Tenant',
     },
+    {
+      path: '/attendance',
+      name: 'Attendance Logs',
+      iconClass: 'fas fa-calendar-check',
+      order: 3,
+      layout: eLayoutType.application,
+
+    },
   ]);
 }

@@ -45,4 +45,12 @@ public static class HRManagementPermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public static class PayrollRecords
+    {
+        public const string Default = GroupName + ".PayrollRecords";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

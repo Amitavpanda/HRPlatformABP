@@ -1,3 +1,4 @@
+using HRManagement.PayrollRecords;
 using HRManagement.LeaveRequests;
 using HRManagement.AttendanceLogs;
 using HRManagement.Employees;
@@ -33,6 +34,7 @@ public class HRManagementDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<PayrollRecord> PayrollRecords { get; set; } = null!;
     public DbSet<LeaveRequest> LeaveRequests { get; set; } = null!;
     public DbSet<AttendanceLog> AttendanceLogs { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
@@ -165,6 +167,23 @@ public class HRManagementDbContext :
                 b.Property(x => x.WorkflowInstanceId).HasColumnName(nameof(LeaveRequest.WorkflowInstanceId)).HasMaxLength(LeaveRequestConsts.WorkflowInstanceIdMaxLength);
                 b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
                 b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.ReviewedBy).OnDelete(DeleteBehavior.SetNull);
+            });
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<PayrollRecord>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "PayrollRecords", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.Month).HasColumnName(nameof(PayrollRecord.Month)).HasMaxLength(PayrollRecordConsts.MonthMaxLength);
+                b.Property(x => x.Year).HasColumnName(nameof(PayrollRecord.Year)).HasMaxLength(PayrollRecordConsts.YearMaxLength);
+                b.Property(x => x.BaseSalary).HasColumnName(nameof(PayrollRecord.BaseSalary));
+                b.Property(x => x.LeaveDeductions).HasColumnName(nameof(PayrollRecord.LeaveDeductions));
+                b.Property(x => x.NetPay).HasColumnName(nameof(PayrollRecord.NetPay));
+                b.Property(x => x.Status).HasColumnName(nameof(PayrollRecord.Status));
+                b.Property(x => x.PayslipUrl).HasColumnName(nameof(PayrollRecord.PayslipUrl));
+                b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
             });
 
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
+using Volo.Abp.Domain.Entities; // Add this using directive to resolve EntityNotFoundException
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -163,6 +164,18 @@ namespace HRManagement.Employees
             {
                 Token = token
             };
+        }
+
+        public async Task<EmployeeDto> GetByIdentityUserIdAsync(Guid identityUserId)
+        {
+            var employee = await _employeeRepository.FirstOrDefaultAsync(e => e.IdentityUserId == identityUserId);
+
+            // No other changes are needed as the EntityNotFoundException is part of the Volo.Abp.Domain.Entities namespace.
+            if (employee == null)
+            {
+                throw new EntityNotFoundException(typeof(Employee), identityUserId);
+            }
+            return ObjectMapper.Map<Employee, EmployeeDto>(employee);
         }
     }
 }

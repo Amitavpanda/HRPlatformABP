@@ -163,6 +163,18 @@ export class EmployeeService {
       { apiName: this.apiName, ...config },
     );
 
+  getEmployeeByUserId = (userId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EmployeeDto>(
+      {
+        method: 'GET',
+        url: '/api/app/employees',
+        params: {
+          identityUserId: userId,
+        },
+      },
+      { apiName: this.apiName, ...config },
+    );
+
   getWithNavigationProperties = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, EmployeeWithNavigationPropertiesDto>(
       {
