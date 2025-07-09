@@ -99,6 +99,10 @@ const routes: Routes = [
         m => m.AttendanceLogEmployeesModule
       ),
   },
+  {
+    path: 'leave-request-initiation',
+    loadChildren: () => import('./leave-requests/leave-request-employee/leave-request-employee.module').then(m => m.LeaveRequestEmployeeModule),
+  },
 ];
 
 @NgModule({

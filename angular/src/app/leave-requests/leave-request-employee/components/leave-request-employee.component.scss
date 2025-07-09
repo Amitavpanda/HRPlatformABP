@@ -1,0 +1,30 @@
+.leave-request-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.leave-request-form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.leave-request-form input,
+.leave-request-form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+.leave-request-form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.leave-request-form button:hover {
+  background-color: #0056b3;
+}

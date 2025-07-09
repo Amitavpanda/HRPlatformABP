@@ -1,0 +1,43 @@
+<div class="leave-request-form">
+  <h2>Leave Request Initiation</h2>
+  <form [formGroup]="leaveRequestForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="leaveRequestType">Leave Request Type</label>
+      <select id="leaveRequestType" formControlName="leaveRequestType" class="form-control">
+        <option value="SickLeave">Sick Leave</option>
+        <option value="CasualLeave">Casual Leave</option>
+        <option value="AnnualLeave">Annual Leave</option>
+        <option value="MaternityLeave">Maternity Leave</option>
+        <option value="UnpaidLeave">Unpaid Leave</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Start Date</label>
+      <input type="date" id="startDate" formControlName="startDate" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">End Date</label>
+      <input type="date" id="endDate" formControlName="endDate" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="leaveRequestStatus">Leave Request Status</label>
+      <select id="leaveRequestStatus" formControlName="leaveRequestStatus" class="form-control">
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="requestedOn">Requested On</label>
+      <input type="text" id="requestedOn" formControlName="requestedOn" class="form-control" readonly />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Leave Request</button>
+  </form>
+</div>

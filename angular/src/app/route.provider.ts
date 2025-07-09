@@ -33,5 +33,12 @@ function configureRoutes() {
       layout: eLayoutType.application,
 
     },
+    {
+      path: '/leave-request-initiation',
+      name: 'Leave Request Initiation',
+      iconClass: 'fas fa-file-alt',
+      order: 4,
+      layout: eLayoutType.application,
+    },
   ]);
 }
