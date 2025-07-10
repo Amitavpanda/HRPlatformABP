@@ -1,25 +1,26 @@
-using HRManagement.Shared;
-using Volo.Abp.Identity;
 using HRManagement.Employees;
+using HRManagement.LeaveRequests;
+using HRManagement.Permissions;
+using HRManagement.Shared;
+using HRManagement.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
+using MiniExcelLibs;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
-using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
-using HRManagement.Permissions;
-using HRManagement.LeaveRequests;
-using MiniExcelLibs;
-using Volo.Abp.Content;
 using Volo.Abp.Authorization;
 using Volo.Abp.Caching;
-using Microsoft.Extensions.Caching.Distributed;
-using HRManagement.Shared;
+using Volo.Abp.Content;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 
 namespace HRManagement.LeaveRequests
 {
@@ -33,13 +34,15 @@ namespace HRManagement.LeaveRequests
 
         protected IRepository<HRManagement.Employees.Employee, Guid> _employeeRepository;
         protected IRepository<Volo.Abp.Identity.IdentityUser, Guid> _identityUserRepository;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public LeaveRequestsAppServiceBase(ILeaveRequestRepository leaveRequestRepository, LeaveRequestManager leaveRequestManager, IDistributedCache<LeaveRequestDownloadTokenCacheItem, string> downloadTokenCache, IRepository<HRManagement.Employees.Employee, Guid> employeeRepository, IRepository<Volo.Abp.Identity.IdentityUser, Guid> identityUserRepository)
+        public LeaveRequestsAppServiceBase(IHttpClientFactory httpClientFactory, ILeaveRequestRepository leaveRequestRepository, LeaveRequestManager leaveRequestManager, IDistributedCache<LeaveRequestDownloadTokenCacheItem, string> downloadTokenCache, IRepository<HRManagement.Employees.Employee, Guid> employeeRepository, IRepository<Volo.Abp.Identity.IdentityUser, Guid> identityUserRepository)
         {
             _downloadTokenCache = downloadTokenCache;
             _leaveRequestRepository = leaveRequestRepository;
             _leaveRequestManager = leaveRequestManager; _employeeRepository = employeeRepository;
             _identityUserRepository = identityUserRepository;
+            _httpClientFactory = httpClientFactory;
 
         }
 
@@ -48,10 +51,19 @@ namespace HRManagement.LeaveRequests
             var totalCount = await _leaveRequestRepository.GetCountAsync(input.FilterText, input.LeaveRequestType, input.StartDateMin, input.StartDateMax, input.EndDateMin, input.EndDateMax, input.LeaveRequestStatus, input.RequestedOnMin, input.RequestedOnMax, input.ReviewedOnMin, input.ReviewedOnMax, input.WorkflowInstanceId, input.EmployeeId, input.ReviewedBy);
             var items = await _leaveRequestRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.LeaveRequestType, input.StartDateMin, input.StartDateMax, input.EndDateMin, input.EndDateMax, input.LeaveRequestStatus, input.RequestedOnMin, input.RequestedOnMax, input.ReviewedOnMin, input.ReviewedOnMax, input.WorkflowInstanceId, input.EmployeeId, input.ReviewedBy, input.Sorting, input.MaxResultCount, input.SkipCount);
 
-            return new PagedResultDto<LeaveRequestWithNavigationPropertiesDto>
+            // Call Elsa workflow endpoint
+            var httpClient = _httpClientFactory.CreateClient();
+            var elsaResponse = await httpClient.GetAsync("https://localhost:44325/workflows/leave-requests/hello"); // Or your actual host/port
+            var message = await elsaResponse.Content.ReadAsStringAsync();
+
+
+
+            return new PagedResultWithMessageDto<LeaveRequestWithNavigationPropertiesDto>
             {
                 TotalCount = totalCount,
-                Items = ObjectMapper.Map<List<LeaveRequestWithNavigationProperties>, List<LeaveRequestWithNavigationPropertiesDto>>(items)
+                Items = ObjectMapper.Map<List<LeaveRequestWithNavigationProperties>, List<LeaveRequestWithNavigationPropertiesDto>>(items),
+                Message = message
+
             };
         }
 

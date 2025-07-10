@@ -10,6 +10,7 @@ using Elsa.Persistence.EntityFrameworkCore.DbContexts;
 using HRManagement.EntityFrameworkCore;
 using HRManagement.HealthChecks;
 using HRManagement.MultiTenancy;
+using HRManagement.Workflows;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
@@ -19,9 +20,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -77,8 +78,6 @@ public class HRManagementHttpApiHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
-
-
         PreConfigure<OpenIddictBuilder>(builder =>
         {
             builder.AddValidation(options =>
@@ -107,7 +106,7 @@ public class HRManagementHttpApiHostModule : AbpModule
     {
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
-
+        context.Services.AddHttpClient();
 
 
         context.Services.AddElsa(elsa =>
@@ -133,8 +132,8 @@ public class HRManagementHttpApiHostModule : AbpModule
                 identity.UseAdminUserProvider();
             });
 
-            // Default authentication (API key)
-            elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
+            //Default authentication(API key)
+            //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 
             // Expose Elsa API endpoints
             elsa.UseWorkflowsApi();
@@ -359,9 +358,9 @@ public class HRManagementHttpApiHostModule : AbpModule
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 
-        app.UseCors();
-        app.UseAuthentication();
-        app.UseAuthorization();
+        //app.UseCors();
+        //app.UseAuthentication();
+        //app.UseAuthorization();
 
         // Elsa API endpoints and HTTP endpoint middleware
         app.UseWorkflowsApi(); // Elsa API endpoints (/v3/workflows etc.)
