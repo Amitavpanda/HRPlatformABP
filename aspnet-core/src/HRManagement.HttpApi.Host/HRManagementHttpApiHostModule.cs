@@ -1,49 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using Elsa;
+using Elsa.EntityFrameworkCore.Extensions;
+using Elsa.EntityFrameworkCore.Extensions;
+using Elsa.EntityFrameworkCore.Modules.Management;
+using Elsa.EntityFrameworkCore.Modules.Runtime;
+using Elsa.Extensions;
+using Elsa.Extensions;
+using Elsa.Persistence.EntityFrameworkCore;
+using Elsa.Persistence.EntityFrameworkCore.DbContexts;
+using HRManagement.EntityFrameworkCore;
+using HRManagement.HealthChecks;
+using HRManagement.MultiTenancy;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Extensions.DependencyInjection;
-using OpenIddict.Validation.AspNetCore;
-using OpenIddict.Server.AspNetCore;
-using HRManagement.EntityFrameworkCore;
-using HRManagement.MultiTenancy;
 using Microsoft.OpenApi.Models;
+using OpenIddict.Server.AspNetCore;
+using OpenIddict.Validation.AspNetCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Volo.Abp;
-using Volo.Abp.Account.Web;
+using Volo.Abp.Account;
 using Volo.Abp.Account.Public.Web;
+using Volo.Abp.Account.Public.Web.ExternalProviders;
 using Volo.Abp.Account.Public.Web.Impersonation;
+using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
-using Volo.Abp.Modularity;
-using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.Account;
-using Volo.Abp.Account.Public.Web.ExternalProviders;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Microsoft.AspNetCore.Hosting;
-using HRManagement.HealthChecks;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.Autofac;
 using Volo.Abp.Identity;
 using Volo.Abp.LeptonX.Shared;
+using Volo.Abp.Localization;
+using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
-using Volo.Abp.Swashbuckle;
-using Volo.Saas.Host;
 using Volo.Abp.Security.Claims;
+using Volo.Abp.Swashbuckle;
+using Volo.Abp.UI.Navigation.Urls;
+using Volo.Abp.VirtualFileSystem;
+using Volo.Saas.Host;
 
 namespace HRManagement;
 
@@ -65,6 +77,7 @@ public class HRManagementHttpApiHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
 
         PreConfigure<OpenIddictBuilder>(builder =>
         {
@@ -94,6 +107,59 @@ public class HRManagementHttpApiHostModule : AbpModule
     {
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
+
+
+
+        context.Services.AddElsa(elsa =>
+        {
+            // Management layer with EF Core, e.g., SQL Server:
+            elsa.UseWorkflowManagement(management =>
+                management.UseEntityFrameworkCore(ef =>
+                    ef.UseSqlServer(configuration.GetConnectionString("Default"))
+                )
+            );
+
+            // Runtime layer with EF Core
+            elsa.UseWorkflowRuntime(runtime =>
+                runtime.UseEntityFrameworkCore(ef =>
+                    ef.UseSqlServer(configuration.GetConnectionString("Default"))
+                )
+            );
+
+            // Identity for authentication/authorization (optional, for admin APIs)
+            elsa.UseIdentity(identity =>
+            {
+                identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // replace this with a secure key
+                identity.UseAdminUserProvider();
+            });
+
+            // Default authentication (API key)
+            elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
+
+            // Expose Elsa API endpoints
+            elsa.UseWorkflowsApi();
+
+            // Enable JavaScript, C#, Liquid expressions and HTTP/timer activities
+            elsa.UseJavaScript();
+            elsa.UseCSharp();
+            elsa.UseLiquid();
+            elsa.UseHttp();
+            elsa.UseScheduling();
+
+            // Register custom activities/workflows, if any
+            elsa.AddActivitiesFrom<HRManagementHttpApiHostModule>();
+            elsa.AddWorkflowsFrom<HRManagementHttpApiHostModule>();
+        });
+
+        context.Services.AddCors(cors => cors
+    .AddDefaultPolicy(policy => policy
+        .AllowAnyOrigin() // For dev only. Restrict in production.
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithExposedHeaders("x-elsa-workflow-instance-id")));
+
+        // Health Checks
+        context.Services.AddHealthChecks();
 
         if (!configuration.GetValue<bool>("App:DisablePII"))
         {
@@ -292,6 +358,14 @@ public class HRManagementHttpApiHostModule : AbpModule
     {
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
+
+        app.UseCors();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        // Elsa API endpoints and HTTP endpoint middleware
+        app.UseWorkflowsApi(); // Elsa API endpoints (/v3/workflows etc.)
+        app.UseWorkflows();
 
         if (env.IsDevelopment())
         {

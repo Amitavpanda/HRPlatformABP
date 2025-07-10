@@ -59,6 +59,7 @@ namespace HRManagement.Controllers.LeaveRequests
         public virtual Task<PagedResultDto<LookupDto<Guid>>> GetIdentityUserLookupAsync(LookupRequestDto input)
         {
             return _leaveRequestsAppService.GetIdentityUserLookupAsync(input);
+
         }
 
         [HttpPost]

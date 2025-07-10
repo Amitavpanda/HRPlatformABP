@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Account;
+﻿using Elsa.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Account;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
@@ -11,6 +13,7 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TextTemplateManagement;
 using Volo.Saas.Host;
+
 
 namespace HRManagement;
 
@@ -34,6 +37,11 @@ public class HRManagementApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+
+
+
+
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<HRManagementApplicationModule>();
