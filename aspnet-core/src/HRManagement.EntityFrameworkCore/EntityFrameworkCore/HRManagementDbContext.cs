@@ -126,16 +126,6 @@ public class HRManagementDbContext :
         }
         if (builder.IsHostDatabase())
         {
-            builder.Entity<Employee>(b =>
-            {
-                b.ToTable(HRManagementConsts.DbTablePrefix + "Employees", HRManagementConsts.DbSchema);
-                b.ConfigureByConvention();
-                b.Property(x => x.EmployeeNumber).HasColumnName(nameof(Employee.EmployeeNumber)).HasMaxLength(EmployeeConsts.EmployeeNumberMaxLength);
-                b.Property(x => x.DateOfJoining).HasColumnName(nameof(Employee.DateOfJoining));
-                b.Property(x => x.LeaveBalance).HasColumnName(nameof(Employee.LeaveBalance)).HasMaxLength((int)EmployeeConsts.LeaveBalanceMaxLength);
-                b.Property(x => x.BaseSalary).HasColumnName(nameof(Employee.BaseSalary));
-                b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
-            });
 
         }
         if (builder.IsHostDatabase())
@@ -184,6 +174,43 @@ public class HRManagementDbContext :
                 b.Property(x => x.Status).HasColumnName(nameof(PayrollRecord.Status));
                 b.Property(x => x.PayslipUrl).HasColumnName(nameof(PayrollRecord.PayslipUrl));
                 b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
+            });
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<Employee>(b =>
+            {
+                b.ToTable(HRManagementConsts.DbTablePrefix + "Employees", HRManagementConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.EmployeeNumber).HasColumnName(nameof(Employee.EmployeeNumber)).HasMaxLength(EmployeeConsts.EmployeeNumberMaxLength);
+                b.Property(x => x.DateOfJoining).HasColumnName(nameof(Employee.DateOfJoining));
+                b.Property(x => x.PaidLeaveBalance).HasColumnName(nameof(Employee.PaidLeaveBalance)).HasMaxLength((int)EmployeeConsts.PaidLeaveBalanceMaxLength);
+                b.Property(x => x.BaseSalary).HasColumnName(nameof(Employee.BaseSalary));
+                b.Property(x => x.UnpaidLeaveBalance).HasColumnName(nameof(Employee.UnpaidLeaveBalance)).HasMaxLength((int)EmployeeConsts.UnpaidLeaveBalanceMaxLength);
+                b.Property(x => x.SickLeaveBalance).HasColumnName(nameof(Employee.SickLeaveBalance)).HasMaxLength((int)EmployeeConsts.SickLeaveBalanceMaxLength);
+                b.Property(x => x.DeductionPerDay).HasColumnName(nameof(Employee.DeductionPerDay)).HasMaxLength((int)EmployeeConsts.DeductionPerDayMaxLength);
+                b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.IdentityUserId).OnDelete(DeleteBehavior.SetNull);
             });
 
         }

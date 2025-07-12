@@ -19,9 +19,15 @@ namespace HRManagement.Employees
 
         public virtual DateTime DateOfJoining { get; set; }
 
-        public virtual decimal LeaveBalance { get; set; }
+        public virtual decimal PaidLeaveBalance { get; set; }
 
         public virtual decimal BaseSalary { get; set; }
+
+        public virtual decimal UnpaidLeaveBalance { get; set; }
+
+        public virtual decimal SickLeaveBalance { get; set; }
+
+        public virtual decimal DeductionPerDay { get; set; }
         public Guid? IdentityUserId { get; set; }
 
         protected EmployeeBase()
@@ -29,24 +35,57 @@ namespace HRManagement.Employees
 
         }
 
-        public EmployeeBase(Guid id, Guid? identityUserId, DateTime dateOfJoining, decimal leaveBalance, decimal baseSalary, string? employeeNumber = null)
+        public EmployeeBase(Guid id, Guid? identityUserId, DateTime dateOfJoining, decimal paidLeaveBalance, decimal baseSalary, decimal unpaidLeaveBalance, decimal sickLeaveBalance, decimal deductionPerDay, string? employeeNumber = null)
         {
 
             Id = id;
-            if (leaveBalance < EmployeeConsts.LeaveBalanceMinLength)
+            if (paidLeaveBalance < EmployeeConsts.PaidLeaveBalanceMinLength)
             {
-                throw new ArgumentOutOfRangeException(nameof(leaveBalance), leaveBalance, "The value of 'leaveBalance' cannot be lower than " + EmployeeConsts.LeaveBalanceMinLength);
+                throw new ArgumentOutOfRangeException(nameof(paidLeaveBalance), paidLeaveBalance, "The value of 'paidLeaveBalance' cannot be lower than " + EmployeeConsts.PaidLeaveBalanceMinLength);
             }
 
-            if (leaveBalance > EmployeeConsts.LeaveBalanceMaxLength)
+            if (paidLeaveBalance > EmployeeConsts.PaidLeaveBalanceMaxLength)
             {
-                throw new ArgumentOutOfRangeException(nameof(leaveBalance), leaveBalance, "The value of 'leaveBalance' cannot be greater than " + EmployeeConsts.LeaveBalanceMaxLength);
+                throw new ArgumentOutOfRangeException(nameof(paidLeaveBalance), paidLeaveBalance, "The value of 'paidLeaveBalance' cannot be greater than " + EmployeeConsts.PaidLeaveBalanceMaxLength);
+            }
+
+            if (unpaidLeaveBalance < EmployeeConsts.UnpaidLeaveBalanceMinLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(unpaidLeaveBalance), unpaidLeaveBalance, "The value of 'unpaidLeaveBalance' cannot be lower than " + EmployeeConsts.UnpaidLeaveBalanceMinLength);
+            }
+
+            if (unpaidLeaveBalance > EmployeeConsts.UnpaidLeaveBalanceMaxLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(unpaidLeaveBalance), unpaidLeaveBalance, "The value of 'unpaidLeaveBalance' cannot be greater than " + EmployeeConsts.UnpaidLeaveBalanceMaxLength);
+            }
+
+            if (sickLeaveBalance < EmployeeConsts.SickLeaveBalanceMinLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(sickLeaveBalance), sickLeaveBalance, "The value of 'sickLeaveBalance' cannot be lower than " + EmployeeConsts.SickLeaveBalanceMinLength);
+            }
+
+            if (sickLeaveBalance > EmployeeConsts.SickLeaveBalanceMaxLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(sickLeaveBalance), sickLeaveBalance, "The value of 'sickLeaveBalance' cannot be greater than " + EmployeeConsts.SickLeaveBalanceMaxLength);
+            }
+
+            if (deductionPerDay < EmployeeConsts.DeductionPerDayMinLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(deductionPerDay), deductionPerDay, "The value of 'deductionPerDay' cannot be lower than " + EmployeeConsts.DeductionPerDayMinLength);
+            }
+
+            if (deductionPerDay > EmployeeConsts.DeductionPerDayMaxLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(deductionPerDay), deductionPerDay, "The value of 'deductionPerDay' cannot be greater than " + EmployeeConsts.DeductionPerDayMaxLength);
             }
 
             Check.Length(employeeNumber, nameof(employeeNumber), EmployeeConsts.EmployeeNumberMaxLength, EmployeeConsts.EmployeeNumberMinLength);
             DateOfJoining = dateOfJoining;
-            LeaveBalance = leaveBalance;
+            PaidLeaveBalance = paidLeaveBalance;
             BaseSalary = baseSalary;
+            UnpaidLeaveBalance = unpaidLeaveBalance;
+            SickLeaveBalance = sickLeaveBalance;
+            DeductionPerDay = deductionPerDay;
             EmployeeNumber = employeeNumber;
             IdentityUserId = identityUserId;
         }

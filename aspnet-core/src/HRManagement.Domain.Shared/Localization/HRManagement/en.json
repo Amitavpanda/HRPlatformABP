@@ -167,6 +167,18 @@
     "MaxYear": "Max Year",
     "MaxLeaveDeductions": "Max Leave Deductions",
     "MaxNetPay": "Max Net Pay",
-    "MaxPayslipUrl": "Max Payslip Url"
+    "MaxPayslipUrl": "Max Payslip Url",
+    "PaidLeaveBalance": "Paid Leave Balance",
+    "MinPaidLeaveBalance": "Min Paid Leave Balance",
+    "MaxPaidLeaveBalance": "Max Paid Leave Balance",
+    "UnpaidLeaveBalance": "Unpaid Leave Balance",
+    "SickLeaveBalance": "Sick Leave Balance",
+    "DeductionPerDay": "Deduction Per Day",
+    "MinUnpaidLeaveBalance": "Min Unpaid Leave Balance",
+    "MinSickLeaveBalance": "Min Sick Leave Balance",
+    "MinDeductionPerDay": "Min Deduction Per Day",
+    "MaxUnpaidLeaveBalance": "Max Unpaid Leave Balance",
+    "MaxSickLeaveBalance": "Max Sick Leave Balance",
+    "MaxDeductionPerDay": "Max Deduction Per Day"
   }
 }

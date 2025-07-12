@@ -820,7 +820,7 @@
                 },
                 {
                   "nameOnMethod": "input",
-                  "name": "LeaveBalanceMin",
+                  "name": "PaidLeaveBalanceMin",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -832,7 +832,7 @@
                 },
                 {
                   "nameOnMethod": "input",
-                  "name": "LeaveBalanceMax",
+                  "name": "PaidLeaveBalanceMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -857,6 +857,78 @@
                 {
                   "nameOnMethod": "input",
                   "name": "BaseSalaryMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "UnpaidLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "UnpaidLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SickLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SickLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "DeductionPerDayMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "DeductionPerDayMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1094,7 +1166,7 @@
                   "descriptorName": "input"
                 },
                 {
-                  "name": "LeaveBalanceMin",
+                  "name": "PaidLeaveBalanceMin",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1107,7 +1179,7 @@
                   "descriptorName": "input"
                 },
                 {
-                  "name": "LeaveBalanceMax",
+                  "name": "PaidLeaveBalanceMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1134,6 +1206,84 @@
                 },
                 {
                   "name": "BaseSalaryMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "UnpaidLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "UnpaidLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "SickLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "SickLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "DeductionPerDayMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isRequired": false,
+                  "nameOnMethod": "input",
+                  "isOptional": true,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "name": "DeductionPerDayMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1481,7 +1631,7 @@
                 },
                 {
                   "nameOnMethod": "input",
-                  "name": "LeaveBalanceMin",
+                  "name": "PaidLeaveBalanceMin",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1493,7 +1643,7 @@
                 },
                 {
                   "nameOnMethod": "input",
-                  "name": "LeaveBalanceMax",
+                  "name": "PaidLeaveBalanceMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -1518,6 +1668,78 @@
                 {
                   "nameOnMethod": "input",
                   "name": "BaseSalaryMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "UnpaidLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "UnpaidLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SickLeaveBalanceMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SickLeaveBalanceMax",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "DeductionPerDayMin",
+                  "jsonName": null,
+                  "type": "System.Decimal?",
+                  "typeSimple": "number?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "DeductionPerDayMax",
                   "jsonName": null,
                   "type": "System.Decimal?",
                   "typeSimple": "number?",
@@ -4878,97 +5100,7 @@
       "properties": []
     },
     "Volo.Abp.Identity.IdentityUserDto": {
-      "baseType": "Volo.Abp.Application.Dtos.ExtensibleEntityDto<System.Guid>",
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "TenantId",
-          "jsonName": null,
-          "type": "System.Guid?",
-          "typeSimple": "string?",
-          "isRequired": false
-        },
-        {
-          "name": "UserName",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        },
-        {
-          "name": "Email",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        },
-        {
-          "name": "Name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        },
-        {
-          "name": "Surname",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        },
-        {
-          "name": "EmailConfirmed",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false
-        },
-        {
-          "name": "PhoneNumber",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        },
-        {
-          "name": "PhoneNumberConfirmed",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false
-        },
-        {
-          "name": "SupportTwoFactor",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false
-        },
-        {
-          "name": "LockoutEnabled",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false
-        },
-        {
-          "name": "IsLockedOut",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false
-        },
-        {
-          "name": "ConcurrencyStamp",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false
-        }
-      ]
+      "properties": null
     },
     "HRManagement.Shared.LookupRequestDto": {
       "baseType": "Volo.Abp.Application.Dtos.PagedResultRequestDto",
@@ -5412,14 +5544,14 @@
           "isRequired": false
         },
         {
-          "name": "LeaveBalanceMin",
+          "name": "PaidLeaveBalanceMin",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",
           "isRequired": false
         },
         {
-          "name": "LeaveBalanceMax",
+          "name": "PaidLeaveBalanceMax",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",
@@ -5434,6 +5566,48 @@
         },
         {
           "name": "BaseSalaryMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalanceMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalanceMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalanceMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalanceMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDayMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDayMax",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",
@@ -5472,7 +5646,7 @@
           "isRequired": false
         },
         {
-          "name": "LeaveBalance",
+          "name": "PaidLeaveBalance",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5481,6 +5655,30 @@
         },
         {
           "name": "BaseSalary",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDay",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5528,7 +5726,7 @@
           "isRequired": false
         },
         {
-          "name": "LeaveBalance",
+          "name": "PaidLeaveBalance",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5537,6 +5735,30 @@
         },
         {
           "name": "BaseSalary",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDay",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5577,7 +5799,7 @@
           "isRequired": false
         },
         {
-          "name": "LeaveBalance",
+          "name": "PaidLeaveBalance",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5586,6 +5808,30 @@
         },
         {
           "name": "BaseSalary",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRef": false,
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDay",
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
@@ -5662,14 +5908,14 @@
           "isRequired": false
         },
         {
-          "name": "LeaveBalanceMin",
+          "name": "PaidLeaveBalanceMin",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",
           "isRequired": false
         },
         {
-          "name": "LeaveBalanceMax",
+          "name": "PaidLeaveBalanceMax",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",
@@ -5684,6 +5930,48 @@
         },
         {
           "name": "BaseSalaryMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalanceMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "UnpaidLeaveBalanceMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalanceMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "SickLeaveBalanceMax",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDayMin",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false
+        },
+        {
+          "name": "DeductionPerDayMax",
           "jsonName": null,
           "type": "System.Decimal?",
           "typeSimple": "number?",

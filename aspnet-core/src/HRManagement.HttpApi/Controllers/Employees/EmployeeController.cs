@@ -10,7 +10,6 @@ using Volo.Abp.Application.Dtos;
 using HRManagement.Employees;
 using Volo.Abp.Content;
 using HRManagement.Shared;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HRManagement.Controllers.Employees
 {
@@ -18,7 +17,7 @@ namespace HRManagement.Controllers.Employees
     [Area("app")]
     [ControllerName("Employee")]
     [Route("api/app/employees")]
-    [AllowAnonymous]
+
     public abstract class EmployeeControllerBase : AbpController
     {
         protected IEmployeesAppService _employeesAppService;
@@ -46,14 +45,6 @@ namespace HRManagement.Controllers.Employees
         public virtual Task<EmployeeDto> GetAsync(Guid id)
         {
             return _employeesAppService.GetAsync(id);
-        }
-
-
-        [HttpGet]
-        [Route("by-identity-user-id")]
-        public virtual Task<EmployeeDto> GetByIdentityUserIdAsync([FromQuery] Guid identityUserId)
-        {
-            return _employeesAppService.GetByIdentityUserIdAsync(identityUserId);
         }
 
         [HttpGet]

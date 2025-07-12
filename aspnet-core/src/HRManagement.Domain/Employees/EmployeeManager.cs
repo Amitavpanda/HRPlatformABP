@@ -20,15 +20,18 @@ namespace HRManagement.Employees
         }
 
         public virtual async Task<Employee> CreateAsync(
-        Guid? identityUserId, DateTime dateOfJoining, decimal leaveBalance, decimal baseSalary, string? employeeNumber = null)
+        Guid? identityUserId, DateTime dateOfJoining, decimal paidLeaveBalance, decimal baseSalary, decimal unpaidLeaveBalance, decimal sickLeaveBalance, decimal deductionPerDay, string? employeeNumber = null)
         {
             Check.NotNull(dateOfJoining, nameof(dateOfJoining));
-            Check.Range(leaveBalance, nameof(leaveBalance), EmployeeConsts.LeaveBalanceMinLength, EmployeeConsts.LeaveBalanceMaxLength);
+            Check.Range(paidLeaveBalance, nameof(paidLeaveBalance), EmployeeConsts.PaidLeaveBalanceMinLength, EmployeeConsts.PaidLeaveBalanceMaxLength);
+            Check.Range(unpaidLeaveBalance, nameof(unpaidLeaveBalance), EmployeeConsts.UnpaidLeaveBalanceMinLength, EmployeeConsts.UnpaidLeaveBalanceMaxLength);
+            Check.Range(sickLeaveBalance, nameof(sickLeaveBalance), EmployeeConsts.SickLeaveBalanceMinLength, EmployeeConsts.SickLeaveBalanceMaxLength);
+            Check.Range(deductionPerDay, nameof(deductionPerDay), EmployeeConsts.DeductionPerDayMinLength, EmployeeConsts.DeductionPerDayMaxLength);
             Check.Length(employeeNumber, nameof(employeeNumber), EmployeeConsts.EmployeeNumberMaxLength, EmployeeConsts.EmployeeNumberMinLength);
 
             var employee = new Employee(
              GuidGenerator.Create(),
-             identityUserId, dateOfJoining, leaveBalance, baseSalary, employeeNumber
+             identityUserId, dateOfJoining, paidLeaveBalance, baseSalary, unpaidLeaveBalance, sickLeaveBalance, deductionPerDay, employeeNumber
              );
 
             return await _employeeRepository.InsertAsync(employee);
@@ -36,19 +39,25 @@ namespace HRManagement.Employees
 
         public virtual async Task<Employee> UpdateAsync(
             Guid id,
-            Guid? identityUserId, DateTime dateOfJoining, decimal leaveBalance, decimal baseSalary, string? employeeNumber = null, [CanBeNull] string? concurrencyStamp = null
+            Guid? identityUserId, DateTime dateOfJoining, decimal paidLeaveBalance, decimal baseSalary, decimal unpaidLeaveBalance, decimal sickLeaveBalance, decimal deductionPerDay, string? employeeNumber = null, [CanBeNull] string? concurrencyStamp = null
         )
         {
             Check.NotNull(dateOfJoining, nameof(dateOfJoining));
-            Check.Range(leaveBalance, nameof(leaveBalance), EmployeeConsts.LeaveBalanceMinLength, EmployeeConsts.LeaveBalanceMaxLength);
+            Check.Range(paidLeaveBalance, nameof(paidLeaveBalance), EmployeeConsts.PaidLeaveBalanceMinLength, EmployeeConsts.PaidLeaveBalanceMaxLength);
+            Check.Range(unpaidLeaveBalance, nameof(unpaidLeaveBalance), EmployeeConsts.UnpaidLeaveBalanceMinLength, EmployeeConsts.UnpaidLeaveBalanceMaxLength);
+            Check.Range(sickLeaveBalance, nameof(sickLeaveBalance), EmployeeConsts.SickLeaveBalanceMinLength, EmployeeConsts.SickLeaveBalanceMaxLength);
+            Check.Range(deductionPerDay, nameof(deductionPerDay), EmployeeConsts.DeductionPerDayMinLength, EmployeeConsts.DeductionPerDayMaxLength);
             Check.Length(employeeNumber, nameof(employeeNumber), EmployeeConsts.EmployeeNumberMaxLength, EmployeeConsts.EmployeeNumberMinLength);
 
             var employee = await _employeeRepository.GetAsync(id);
 
             employee.IdentityUserId = identityUserId;
             employee.DateOfJoining = dateOfJoining;
-            employee.LeaveBalance = leaveBalance;
+            employee.PaidLeaveBalance = paidLeaveBalance;
             employee.BaseSalary = baseSalary;
+            employee.UnpaidLeaveBalance = unpaidLeaveBalance;
+            employee.SickLeaveBalance = sickLeaveBalance;
+            employee.DeductionPerDay = deductionPerDay;
             employee.EmployeeNumber = employeeNumber;
 
             employee.SetConcurrencyStampIfNotNull(concurrencyStamp);

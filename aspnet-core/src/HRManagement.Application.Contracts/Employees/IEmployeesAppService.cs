@@ -32,6 +32,5 @@ namespace HRManagement.Employees
         Task DeleteAllAsync(GetEmployeesInput input);
         Task<HRManagement.Shared.DownloadTokenResultDto> GetDownloadTokenAsync();
 
-        Task<EmployeeDto> GetByIdentityUserIdAsync(Guid identityUserId);
     }
 }

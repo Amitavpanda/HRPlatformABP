@@ -37,8 +37,16 @@ export abstract class AbstractEmployeeDetailViewService {
   }
 
   buildForm() {
-    const { employeeNumber, dateOfJoining, leaveBalance, baseSalary, identityUserId } =
-      this.selected?.employee || {};
+    const {
+      employeeNumber,
+      dateOfJoining,
+      paidLeaveBalance,
+      baseSalary,
+      unpaidLeaveBalance,
+      sickLeaveBalance,
+      deductionPerDay,
+      identityUserId,
+    } = this.selected?.employee || {};
 
     this.form = this.fb.group({
       employeeNumber: [
@@ -46,11 +54,23 @@ export abstract class AbstractEmployeeDetailViewService {
         [Validators.minLength(0), Validators.maxLength(100)],
       ],
       dateOfJoining: [dateOfJoining ?? null, [Validators.required]],
-      leaveBalance: [
-        leaveBalance ?? null,
+      paidLeaveBalance: [
+        paidLeaveBalance ?? null,
         [Validators.required, Validators.min(0), Validators.max(1000)],
       ],
       baseSalary: [baseSalary ?? null, [Validators.required]],
+      unpaidLeaveBalance: [
+        unpaidLeaveBalance ?? null,
+        [Validators.required, Validators.min(0), Validators.max(1000)],
+      ],
+      sickLeaveBalance: [
+        sickLeaveBalance ?? null,
+        [Validators.required, Validators.min(0), Validators.max(1000)],
+      ],
+      deductionPerDay: [
+        deductionPerDay ?? null,
+        [Validators.required, Validators.min(0), Validators.max(1000)],
+      ],
       identityUserId: [identityUserId ?? null, []],
     });
   }

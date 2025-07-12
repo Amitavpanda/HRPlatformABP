@@ -82,14 +82,14 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label" for="employee-leave-balance">
-                  {{ '::LeaveBalance' | abpLocalization }} *
+                <label class="form-label" for="employee-paid-leave-balance">
+                  {{ '::PaidLeaveBalance' | abpLocalization }} *
                 </label>
 
                 <input
                   type="number"
-                  id="employee-leave-balance"
-                  formControlName="leaveBalance"
+                  id="employee-paid-leave-balance"
+                  formControlName="paidLeaveBalance"
                   class="form-control"
                   max="1000"
                 />
@@ -105,6 +105,48 @@
                   id="employee-base-salary"
                   formControlName="baseSalary"
                   class="form-control"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="employee-unpaid-leave-balance">
+                  {{ '::UnpaidLeaveBalance' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="employee-unpaid-leave-balance"
+                  formControlName="unpaidLeaveBalance"
+                  class="form-control"
+                  max="1000"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="employee-sick-leave-balance">
+                  {{ '::SickLeaveBalance' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="employee-sick-leave-balance"
+                  formControlName="sickLeaveBalance"
+                  class="form-control"
+                  max="1000"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="employee-deduction-per-day">
+                  {{ '::DeductionPerDay' | abpLocalization }} *
+                </label>
+
+                <input
+                  type="number"
+                  id="employee-deduction-per-day"
+                  formControlName="deductionPerDay"
+                  class="form-control"
+                  max="1000"
                 />
               </div>
 

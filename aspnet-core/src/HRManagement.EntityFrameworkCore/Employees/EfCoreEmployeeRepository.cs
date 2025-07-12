@@ -25,16 +25,22 @@ namespace HRManagement.Employees
                         string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
             decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null,
             Guid? identityUserId = null,
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryForNavigationPropertiesAsync();
 
-            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, leaveBalanceMin, leaveBalanceMax, baseSalaryMin, baseSalaryMax, identityUserId);
+            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, paidLeaveBalanceMin, paidLeaveBalanceMax, baseSalaryMin, baseSalaryMax, unpaidLeaveBalanceMin, unpaidLeaveBalanceMax, sickLeaveBalanceMin, sickLeaveBalanceMax, deductionPerDayMin, deductionPerDayMax, identityUserId);
 
             var ids = query.Select(x => x.Employee.Id);
             await DeleteManyAsync(ids, cancellationToken: GetCancellationToken(cancellationToken));
@@ -57,10 +63,16 @@ namespace HRManagement.Employees
             string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
             decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null,
             Guid? identityUserId = null,
             string? sorting = null,
             int maxResultCount = int.MaxValue,
@@ -68,7 +80,7 @@ namespace HRManagement.Employees
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryForNavigationPropertiesAsync();
-            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, leaveBalanceMin, leaveBalanceMax, baseSalaryMin, baseSalaryMax, identityUserId);
+            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, paidLeaveBalanceMin, paidLeaveBalanceMax, baseSalaryMin, baseSalaryMax, unpaidLeaveBalanceMin, unpaidLeaveBalanceMax, sickLeaveBalanceMin, sickLeaveBalanceMax, deductionPerDayMin, deductionPerDayMax, identityUserId);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? EmployeeConsts.GetDefaultSorting(true) : sorting);
             return await query.PageBy(skipCount, maxResultCount).ToListAsync(cancellationToken);
         }
@@ -91,10 +103,16 @@ namespace HRManagement.Employees
             string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
             decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null,
             Guid? identityUserId = null)
         {
             return query
@@ -102,10 +120,16 @@ namespace HRManagement.Employees
                     .WhereIf(!string.IsNullOrWhiteSpace(employeeNumber), e => e.Employee.EmployeeNumber.Contains(employeeNumber))
                     .WhereIf(dateOfJoiningMin.HasValue, e => e.Employee.DateOfJoining >= dateOfJoiningMin!.Value)
                     .WhereIf(dateOfJoiningMax.HasValue, e => e.Employee.DateOfJoining <= dateOfJoiningMax!.Value)
-                    .WhereIf(leaveBalanceMin.HasValue, e => e.Employee.LeaveBalance >= leaveBalanceMin!.Value)
-                    .WhereIf(leaveBalanceMax.HasValue, e => e.Employee.LeaveBalance <= leaveBalanceMax!.Value)
+                    .WhereIf(paidLeaveBalanceMin.HasValue, e => e.Employee.PaidLeaveBalance >= paidLeaveBalanceMin!.Value)
+                    .WhereIf(paidLeaveBalanceMax.HasValue, e => e.Employee.PaidLeaveBalance <= paidLeaveBalanceMax!.Value)
                     .WhereIf(baseSalaryMin.HasValue, e => e.Employee.BaseSalary >= baseSalaryMin!.Value)
                     .WhereIf(baseSalaryMax.HasValue, e => e.Employee.BaseSalary <= baseSalaryMax!.Value)
+                    .WhereIf(unpaidLeaveBalanceMin.HasValue, e => e.Employee.UnpaidLeaveBalance >= unpaidLeaveBalanceMin!.Value)
+                    .WhereIf(unpaidLeaveBalanceMax.HasValue, e => e.Employee.UnpaidLeaveBalance <= unpaidLeaveBalanceMax!.Value)
+                    .WhereIf(sickLeaveBalanceMin.HasValue, e => e.Employee.SickLeaveBalance >= sickLeaveBalanceMin!.Value)
+                    .WhereIf(sickLeaveBalanceMax.HasValue, e => e.Employee.SickLeaveBalance <= sickLeaveBalanceMax!.Value)
+                    .WhereIf(deductionPerDayMin.HasValue, e => e.Employee.DeductionPerDay >= deductionPerDayMin!.Value)
+                    .WhereIf(deductionPerDayMax.HasValue, e => e.Employee.DeductionPerDay <= deductionPerDayMax!.Value)
                     .WhereIf(identityUserId != null && identityUserId != Guid.Empty, e => e.IdentityUser != null && e.IdentityUser.Id == identityUserId);
         }
 
@@ -114,16 +138,22 @@ namespace HRManagement.Employees
             string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
             decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null,
             string? sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetQueryableAsync()), filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, leaveBalanceMin, leaveBalanceMax, baseSalaryMin, baseSalaryMax);
+            var query = ApplyFilter((await GetQueryableAsync()), filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, paidLeaveBalanceMin, paidLeaveBalanceMax, baseSalaryMin, baseSalaryMax, unpaidLeaveBalanceMin, unpaidLeaveBalanceMax, sickLeaveBalanceMin, sickLeaveBalanceMax, deductionPerDayMin, deductionPerDayMax);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? EmployeeConsts.GetDefaultSorting(false) : sorting);
             return await query.PageBy(skipCount, maxResultCount).ToListAsync(cancellationToken);
         }
@@ -133,15 +163,21 @@ namespace HRManagement.Employees
             string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
             decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null,
             Guid? identityUserId = null,
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryForNavigationPropertiesAsync();
-            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, leaveBalanceMin, leaveBalanceMax, baseSalaryMin, baseSalaryMax, identityUserId);
+            query = ApplyFilter(query, filterText, employeeNumber, dateOfJoiningMin, dateOfJoiningMax, paidLeaveBalanceMin, paidLeaveBalanceMax, baseSalaryMin, baseSalaryMax, unpaidLeaveBalanceMin, unpaidLeaveBalanceMax, sickLeaveBalanceMin, sickLeaveBalanceMax, deductionPerDayMin, deductionPerDayMax, identityUserId);
             return await query.LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
@@ -151,20 +187,32 @@ namespace HRManagement.Employees
             string? employeeNumber = null,
             DateTime? dateOfJoiningMin = null,
             DateTime? dateOfJoiningMax = null,
-            decimal? leaveBalanceMin = null,
-            decimal? leaveBalanceMax = null,
+            decimal? paidLeaveBalanceMin = null,
+            decimal? paidLeaveBalanceMax = null,
             decimal? baseSalaryMin = null,
-            decimal? baseSalaryMax = null)
+            decimal? baseSalaryMax = null,
+            decimal? unpaidLeaveBalanceMin = null,
+            decimal? unpaidLeaveBalanceMax = null,
+            decimal? sickLeaveBalanceMin = null,
+            decimal? sickLeaveBalanceMax = null,
+            decimal? deductionPerDayMin = null,
+            decimal? deductionPerDayMax = null)
         {
             return query
                     .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.EmployeeNumber!.Contains(filterText!))
                     .WhereIf(!string.IsNullOrWhiteSpace(employeeNumber), e => e.EmployeeNumber.Contains(employeeNumber))
                     .WhereIf(dateOfJoiningMin.HasValue, e => e.DateOfJoining >= dateOfJoiningMin!.Value)
                     .WhereIf(dateOfJoiningMax.HasValue, e => e.DateOfJoining <= dateOfJoiningMax!.Value)
-                    .WhereIf(leaveBalanceMin.HasValue, e => e.LeaveBalance >= leaveBalanceMin!.Value)
-                    .WhereIf(leaveBalanceMax.HasValue, e => e.LeaveBalance <= leaveBalanceMax!.Value)
+                    .WhereIf(paidLeaveBalanceMin.HasValue, e => e.PaidLeaveBalance >= paidLeaveBalanceMin!.Value)
+                    .WhereIf(paidLeaveBalanceMax.HasValue, e => e.PaidLeaveBalance <= paidLeaveBalanceMax!.Value)
                     .WhereIf(baseSalaryMin.HasValue, e => e.BaseSalary >= baseSalaryMin!.Value)
-                    .WhereIf(baseSalaryMax.HasValue, e => e.BaseSalary <= baseSalaryMax!.Value);
+                    .WhereIf(baseSalaryMax.HasValue, e => e.BaseSalary <= baseSalaryMax!.Value)
+                    .WhereIf(unpaidLeaveBalanceMin.HasValue, e => e.UnpaidLeaveBalance >= unpaidLeaveBalanceMin!.Value)
+                    .WhereIf(unpaidLeaveBalanceMax.HasValue, e => e.UnpaidLeaveBalance <= unpaidLeaveBalanceMax!.Value)
+                    .WhereIf(sickLeaveBalanceMin.HasValue, e => e.SickLeaveBalance >= sickLeaveBalanceMin!.Value)
+                    .WhereIf(sickLeaveBalanceMax.HasValue, e => e.SickLeaveBalance <= sickLeaveBalanceMax!.Value)
+                    .WhereIf(deductionPerDayMin.HasValue, e => e.DeductionPerDay >= deductionPerDayMin!.Value)
+                    .WhereIf(deductionPerDayMax.HasValue, e => e.DeductionPerDay <= deductionPerDayMax!.Value);
         }
     }
 }

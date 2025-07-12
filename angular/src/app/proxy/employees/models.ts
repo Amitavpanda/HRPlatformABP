@@ -2,19 +2,26 @@ import type { FullAuditedEntityDto, PagedAndSortedResultRequestDto } from '@abp/
 import type { IdentityUserDto } from '../volo/abp/identity/models';
 
 export interface EmployeeCreateDto {
+  
   employeeNumber?: string;
   dateOfJoining?: string;
-  leaveBalance: number;
+  paidLeaveBalance: number;
   baseSalary: number;
+  unpaidLeaveBalance: number;
+  sickLeaveBalance: number;
+  deductionPerDay: number;
   identityUserId?: string;
 }
 
 export interface EmployeeDto extends FullAuditedEntityDto<string> {
-  items: any;
+  items : any;
   employeeNumber?: string;
   dateOfJoining?: string;
-  leaveBalance: number;
+  paidLeaveBalance: number;
   baseSalary: number;
+  unpaidLeaveBalance: number;
+  sickLeaveBalance: number;
+  deductionPerDay: number;
   identityUserId?: string;
   concurrencyStamp?: string;
 }
@@ -25,18 +32,27 @@ export interface EmployeeExcelDownloadDto {
   employeeNumber?: string;
   dateOfJoiningMin?: string;
   dateOfJoiningMax?: string;
-  leaveBalanceMin?: number;
-  leaveBalanceMax?: number;
+  paidLeaveBalanceMin?: number;
+  paidLeaveBalanceMax?: number;
   baseSalaryMin?: number;
   baseSalaryMax?: number;
+  unpaidLeaveBalanceMin?: number;
+  unpaidLeaveBalanceMax?: number;
+  sickLeaveBalanceMin?: number;
+  sickLeaveBalanceMax?: number;
+  deductionPerDayMin?: number;
+  deductionPerDayMax?: number;
   identityUserId?: string;
 }
 
 export interface EmployeeUpdateDto {
   employeeNumber?: string;
   dateOfJoining?: string;
-  leaveBalance: number;
+  paidLeaveBalance: number;
   baseSalary: number;
+  unpaidLeaveBalance: number;
+  sickLeaveBalance: number;
+  deductionPerDay: number;
   identityUserId?: string;
   concurrencyStamp?: string;
 }
@@ -51,9 +67,15 @@ export interface GetEmployeesInput extends PagedAndSortedResultRequestDto {
   employeeNumber?: string;
   dateOfJoiningMin?: string;
   dateOfJoiningMax?: string;
-  leaveBalanceMin?: number;
-  leaveBalanceMax?: number;
+  paidLeaveBalanceMin?: number;
+  paidLeaveBalanceMax?: number;
   baseSalaryMin?: number;
   baseSalaryMax?: number;
+  unpaidLeaveBalanceMin?: number;
+  unpaidLeaveBalanceMax?: number;
+  sickLeaveBalanceMin?: number;
+  sickLeaveBalanceMax?: number;
+  deductionPerDayMin?: number;
+  deductionPerDayMax?: number;
   identityUserId?: string;
 }

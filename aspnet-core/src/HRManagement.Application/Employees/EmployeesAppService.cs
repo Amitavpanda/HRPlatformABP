@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
-using Volo.Abp.Domain.Entities; // Add this using directive to resolve EntityNotFoundException
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -24,7 +23,7 @@ using HRManagement.Shared;
 namespace HRManagement.Employees
 {
     [RemoteService(IsEnabled = false)]
- 
+    [Authorize(HRManagementPermissions.Employees.Default)]
     public abstract class EmployeesAppServiceBase : HRManagementAppService
     {
         protected IDistributedCache<EmployeeDownloadTokenCacheItem, string> _downloadTokenCache;
@@ -43,8 +42,8 @@ namespace HRManagement.Employees
 
         public virtual async Task<PagedResultDto<EmployeeWithNavigationPropertiesDto>> GetListAsync(GetEmployeesInput input)
         {
-            var totalCount = await _employeeRepository.GetCountAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.LeaveBalanceMin, input.LeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.IdentityUserId);
-            var items = await _employeeRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.LeaveBalanceMin, input.LeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.IdentityUserId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _employeeRepository.GetCountAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.PaidLeaveBalanceMin, input.PaidLeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.UnpaidLeaveBalanceMin, input.UnpaidLeaveBalanceMax, input.SickLeaveBalanceMin, input.SickLeaveBalanceMax, input.DeductionPerDayMin, input.DeductionPerDayMax, input.IdentityUserId);
+            var items = await _employeeRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.PaidLeaveBalanceMin, input.PaidLeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.UnpaidLeaveBalanceMin, input.UnpaidLeaveBalanceMax, input.SickLeaveBalanceMin, input.SickLeaveBalanceMax, input.DeductionPerDayMin, input.DeductionPerDayMax, input.IdentityUserId, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<EmployeeWithNavigationPropertiesDto>
             {
@@ -91,7 +90,7 @@ namespace HRManagement.Employees
         {
 
             var employee = await _employeeManager.CreateAsync(
-            input.IdentityUserId, input.DateOfJoining, input.LeaveBalance, input.BaseSalary, input.EmployeeNumber
+            input.IdentityUserId, input.DateOfJoining, input.PaidLeaveBalance, input.BaseSalary, input.UnpaidLeaveBalance, input.SickLeaveBalance, input.DeductionPerDay, input.EmployeeNumber
             );
 
             return ObjectMapper.Map<Employee, EmployeeDto>(employee);
@@ -103,7 +102,7 @@ namespace HRManagement.Employees
 
             var employee = await _employeeManager.UpdateAsync(
             id,
-            input.IdentityUserId, input.DateOfJoining, input.LeaveBalance, input.BaseSalary, input.EmployeeNumber, input.ConcurrencyStamp
+            input.IdentityUserId, input.DateOfJoining, input.PaidLeaveBalance, input.BaseSalary, input.UnpaidLeaveBalance, input.SickLeaveBalance, input.DeductionPerDay, input.EmployeeNumber, input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<Employee, EmployeeDto>(employee);
@@ -118,13 +117,16 @@ namespace HRManagement.Employees
                 throw new AbpAuthorizationException("Invalid download token: " + input.DownloadToken);
             }
 
-            var employees = await _employeeRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.LeaveBalanceMin, input.LeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.IdentityUserId);
+            var employees = await _employeeRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.PaidLeaveBalanceMin, input.PaidLeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.UnpaidLeaveBalanceMin, input.UnpaidLeaveBalanceMax, input.SickLeaveBalanceMin, input.SickLeaveBalanceMax, input.DeductionPerDayMin, input.DeductionPerDayMax, input.IdentityUserId);
             var items = employees.Select(item => new
             {
                 EmployeeNumber = item.Employee.EmployeeNumber,
                 DateOfJoining = item.Employee.DateOfJoining,
-                LeaveBalance = item.Employee.LeaveBalance,
+                PaidLeaveBalance = item.Employee.PaidLeaveBalance,
                 BaseSalary = item.Employee.BaseSalary,
+                UnpaidLeaveBalance = item.Employee.UnpaidLeaveBalance,
+                SickLeaveBalance = item.Employee.SickLeaveBalance,
+                DeductionPerDay = item.Employee.DeductionPerDay,
 
                 IdentityUser = item.IdentityUser?.Name,
 
@@ -146,7 +148,7 @@ namespace HRManagement.Employees
         [Authorize(HRManagementPermissions.Employees.Delete)]
         public virtual async Task DeleteAllAsync(GetEmployeesInput input)
         {
-            await _employeeRepository.DeleteAllAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.LeaveBalanceMin, input.LeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.IdentityUserId);
+            await _employeeRepository.DeleteAllAsync(input.FilterText, input.EmployeeNumber, input.DateOfJoiningMin, input.DateOfJoiningMax, input.PaidLeaveBalanceMin, input.PaidLeaveBalanceMax, input.BaseSalaryMin, input.BaseSalaryMax, input.UnpaidLeaveBalanceMin, input.UnpaidLeaveBalanceMax, input.SickLeaveBalanceMin, input.SickLeaveBalanceMax, input.DeductionPerDayMin, input.DeductionPerDayMax, input.IdentityUserId);
         }
         public virtual async Task<HRManagement.Shared.DownloadTokenResultDto> GetDownloadTokenAsync()
         {
@@ -164,18 +166,6 @@ namespace HRManagement.Employees
             {
                 Token = token
             };
-        }
-
-        public async Task<EmployeeDto> GetByIdentityUserIdAsync(Guid identityUserId)
-        {
-            var employee = await _employeeRepository.FirstOrDefaultAsync(e => e.IdentityUserId == identityUserId);
-
-            // No other changes are needed as the EntityNotFoundException is part of the Volo.Abp.Domain.Entities namespace.
-            if (employee == null)
-            {
-                throw new EntityNotFoundException(typeof(Employee), identityUserId);
-            }
-            return ObjectMapper.Map<Employee, EmployeeDto>(employee);
         }
     }
 }

@@ -29,19 +29,19 @@ namespace HRManagement.Employees
             // Assert
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.Employee.Id == Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc")).ShouldBe(true);
-            result.Items.Any(x => x.Employee.Id == Guid.Parse("e0ec921f-6948-47f7-ac3b-9bab00eb724f")).ShouldBe(true);
+            result.Items.Any(x => x.Employee.Id == Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d")).ShouldBe(true);
+            result.Items.Any(x => x.Employee.Id == Guid.Parse("cb6146a5-93f6-44f4-ad74-6a6c2062a103")).ShouldBe(true);
         }
 
         [Fact]
         public async Task GetAsync()
         {
             // Act
-            var result = await _employeesAppService.GetAsync(Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"));
+            var result = await _employeesAppService.GetAsync(Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"));
 
             // Assert
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"));
+            result.Id.ShouldBe(Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"));
         }
 
         [Fact]
@@ -50,10 +50,13 @@ namespace HRManagement.Employees
             // Arrange
             var input = new EmployeeCreateDto
             {
-                EmployeeNumber = "17b836b8af4944a9bfc2af5b4fa5a9980a6d5d0fa90b40baad1bf95aaf8ae5d0415ef0b0707146d3a1c5052b474ae2171656",
-                DateOfJoining = new DateTime(2016, 5, 24),
-                LeaveBalance = 671,
-                BaseSalary = 922404883
+                EmployeeNumber = "701901d1f6f346ec86c068e6bd1f67be27604909ac894e2fa3ccbddfc64d161e7ea66abd8e144a129d30fb4b30e330b8e91d",
+                DateOfJoining = new DateTime(2013, 10, 18),
+                PaidLeaveBalance = 133,
+                BaseSalary = 814527125,
+                UnpaidLeaveBalance = 678,
+                SickLeaveBalance = 371,
+                DeductionPerDay = 302
             };
 
             // Act
@@ -63,10 +66,13 @@ namespace HRManagement.Employees
             var result = await _employeeRepository.FindAsync(c => c.Id == serviceResult.Id);
 
             result.ShouldNotBe(null);
-            result.EmployeeNumber.ShouldBe("17b836b8af4944a9bfc2af5b4fa5a9980a6d5d0fa90b40baad1bf95aaf8ae5d0415ef0b0707146d3a1c5052b474ae2171656");
-            result.DateOfJoining.ShouldBe(new DateTime(2016, 5, 24));
-            result.LeaveBalance.ShouldBe(671);
-            result.BaseSalary.ShouldBe(922404883);
+            result.EmployeeNumber.ShouldBe("701901d1f6f346ec86c068e6bd1f67be27604909ac894e2fa3ccbddfc64d161e7ea66abd8e144a129d30fb4b30e330b8e91d");
+            result.DateOfJoining.ShouldBe(new DateTime(2013, 10, 18));
+            result.PaidLeaveBalance.ShouldBe(133);
+            result.BaseSalary.ShouldBe(814527125);
+            result.UnpaidLeaveBalance.ShouldBe(678);
+            result.SickLeaveBalance.ShouldBe(371);
+            result.DeductionPerDay.ShouldBe(302);
         }
 
         [Fact]
@@ -75,33 +81,39 @@ namespace HRManagement.Employees
             // Arrange
             var input = new EmployeeUpdateDto()
             {
-                EmployeeNumber = "d91e7cebac94471197d92918335c92079fedbad99dad4254ba40cd38592bc9ab511b39478f0e4a0bb8cb8347bc8135c9f129",
-                DateOfJoining = new DateTime(2014, 11, 5),
-                LeaveBalance = 231,
-                BaseSalary = 1018314447
+                EmployeeNumber = "0ce56c33918e457ba89aa5b143f8f07b9dd3563a311d44b0b57b767a8f05447340c184cb21df4399aebac3dcfc8ddca7cc9d",
+                DateOfJoining = new DateTime(2018, 4, 17),
+                PaidLeaveBalance = 73,
+                BaseSalary = 998417846,
+                UnpaidLeaveBalance = 324,
+                SickLeaveBalance = 228,
+                DeductionPerDay = 316
             };
 
             // Act
-            var serviceResult = await _employeesAppService.UpdateAsync(Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"), input);
+            var serviceResult = await _employeesAppService.UpdateAsync(Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"), input);
 
             // Assert
             var result = await _employeeRepository.FindAsync(c => c.Id == serviceResult.Id);
 
             result.ShouldNotBe(null);
-            result.EmployeeNumber.ShouldBe("d91e7cebac94471197d92918335c92079fedbad99dad4254ba40cd38592bc9ab511b39478f0e4a0bb8cb8347bc8135c9f129");
-            result.DateOfJoining.ShouldBe(new DateTime(2014, 11, 5));
-            result.LeaveBalance.ShouldBe(231);
-            result.BaseSalary.ShouldBe(1018314447);
+            result.EmployeeNumber.ShouldBe("0ce56c33918e457ba89aa5b143f8f07b9dd3563a311d44b0b57b767a8f05447340c184cb21df4399aebac3dcfc8ddca7cc9d");
+            result.DateOfJoining.ShouldBe(new DateTime(2018, 4, 17));
+            result.PaidLeaveBalance.ShouldBe(73);
+            result.BaseSalary.ShouldBe(998417846);
+            result.UnpaidLeaveBalance.ShouldBe(324);
+            result.SickLeaveBalance.ShouldBe(228);
+            result.DeductionPerDay.ShouldBe(316);
         }
 
         [Fact]
         public async Task DeleteAsync()
         {
             // Act
-            await _employeesAppService.DeleteAsync(Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"));
+            await _employeesAppService.DeleteAsync(Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"));
 
             // Assert
-            var result = await _employeeRepository.FindAsync(c => c.Id == Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"));
+            var result = await _employeeRepository.FindAsync(c => c.Id == Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"));
 
             result.ShouldBeNull();
         }

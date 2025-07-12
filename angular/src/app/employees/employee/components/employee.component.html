@@ -132,15 +132,15 @@
 
             <div class="col-12 col-sm-auto">
               <div class="mb-3">
-                <label class="form-label" for="minLeaveBalance">
-                  {{ '::MinLeaveBalance' | abpLocalization }}
+                <label class="form-label" for="minPaidLeaveBalance">
+                  {{ '::MinPaidLeaveBalance' | abpLocalization }}
                 </label>
 
                 <input
-                  id="minLeaveBalance"
+                  id="minPaidLeaveBalance"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="filters.leaveBalanceMin"
+                  [(ngModel)]="filters.paidLeaveBalanceMin"
                   [ngModelOptions]="{ standalone: true }"
                 />
               </div>
@@ -148,15 +148,15 @@
 
             <div class="col-12 col-sm-auto">
               <div class="mb-3">
-                <label class="form-label" for="maxLeaveBalance">
-                  {{ '::MaxLeaveBalance' | abpLocalization }}
+                <label class="form-label" for="maxPaidLeaveBalance">
+                  {{ '::MaxPaidLeaveBalance' | abpLocalization }}
                 </label>
 
                 <input
-                  id="maxLeaveBalance"
+                  id="maxPaidLeaveBalance"
                   type="number"
                   class="form-control"
-                  [(ngModel)]="filters.leaveBalanceMax"
+                  [(ngModel)]="filters.paidLeaveBalanceMax"
                   [ngModelOptions]="{ standalone: true }"
                 />
               </div>
@@ -189,6 +189,102 @@
                   type="number"
                   class="form-control"
                   [(ngModel)]="filters.baseSalaryMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minUnpaidLeaveBalance">
+                  {{ '::MinUnpaidLeaveBalance' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minUnpaidLeaveBalance"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.unpaidLeaveBalanceMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxUnpaidLeaveBalance">
+                  {{ '::MaxUnpaidLeaveBalance' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxUnpaidLeaveBalance"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.unpaidLeaveBalanceMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minSickLeaveBalance">
+                  {{ '::MinSickLeaveBalance' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minSickLeaveBalance"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.sickLeaveBalanceMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxSickLeaveBalance">
+                  {{ '::MaxSickLeaveBalance' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxSickLeaveBalance"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.sickLeaveBalanceMax"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="minDeductionPerDay">
+                  {{ '::MinDeductionPerDay' | abpLocalization }}
+                </label>
+
+                <input
+                  id="minDeductionPerDay"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.deductionPerDayMin"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-auto">
+              <div class="mb-3">
+                <label class="form-label" for="maxDeductionPerDay">
+                  {{ '::MaxDeductionPerDay' | abpLocalization }}
+                </label>
+
+                <input
+                  id="maxDeductionPerDay"
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="filters.deductionPerDayMax"
                   [ngModelOptions]="{ standalone: true }"
                 />
               </div>
@@ -374,11 +470,11 @@
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column
-          name="{{ '::LeaveBalance' | abpLocalization }}"
-          prop="employee.leaveBalance"
+          name="{{ '::PaidLeaveBalance' | abpLocalization }}"
+          prop="employee.paidLeaveBalance"
         >
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row.employee.leaveBalance }}
+            {{ row.employee.paidLeaveBalance }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column
@@ -387,6 +483,30 @@
         >
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row.employee.baseSalary }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::UnpaidLeaveBalance' | abpLocalization }}"
+          prop="employee.unpaidLeaveBalance"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.employee.unpaidLeaveBalance }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::SickLeaveBalance' | abpLocalization }}"
+          prop="employee.sickLeaveBalance"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.employee.sickLeaveBalance }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ '::DeductionPerDay' | abpLocalization }}"
+          prop="employee.deductionPerDay"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.employee.deductionPerDay }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column

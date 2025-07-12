@@ -78,7 +78,7 @@ namespace HRManagement.Controllers.LeaveRequests
                 return NotFound();
 
             // Make sure your EmployeeDto (or entity) has a LeaveBalance property
-            var balance = employee.LeaveBalance;
+            var balance = employee.PaidLeaveBalance;
             return Ok(new { balance });
         }
 

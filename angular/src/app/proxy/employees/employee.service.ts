@@ -42,6 +42,19 @@ export class EmployeeService {
       { apiName: this.apiName, ...config },
     );
 
+
+  getEmployeeByUserId = (userId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EmployeeDto>(
+      {
+        method: 'GET',
+        url: '/api/app/employees',
+        params: {
+          identityUserId: userId,
+        },
+      },
+      { apiName: this.apiName, ...config },
+    );
+
   deleteAll = (input: GetEmployeesInput, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>(
       {
@@ -55,10 +68,16 @@ export class EmployeeService {
           employeeNumber: input.employeeNumber,
           dateOfJoiningMin: input.dateOfJoiningMin,
           dateOfJoiningMax: input.dateOfJoiningMax,
-          leaveBalanceMin: input.leaveBalanceMin,
-          leaveBalanceMax: input.leaveBalanceMax,
+          paidLeaveBalanceMin: input.paidLeaveBalanceMin,
+          paidLeaveBalanceMax: input.paidLeaveBalanceMax,
           baseSalaryMin: input.baseSalaryMin,
           baseSalaryMax: input.baseSalaryMax,
+          unpaidLeaveBalanceMin: input.unpaidLeaveBalanceMin,
+          unpaidLeaveBalanceMax: input.unpaidLeaveBalanceMax,
+          sickLeaveBalanceMin: input.sickLeaveBalanceMin,
+          sickLeaveBalanceMax: input.sickLeaveBalanceMax,
+          deductionPerDayMin: input.deductionPerDayMin,
+          deductionPerDayMax: input.deductionPerDayMax,
           identityUserId: input.identityUserId,
         },
       },
@@ -131,10 +150,16 @@ export class EmployeeService {
           employeeNumber: input.employeeNumber,
           dateOfJoiningMin: input.dateOfJoiningMin,
           dateOfJoiningMax: input.dateOfJoiningMax,
-          leaveBalanceMin: input.leaveBalanceMin,
-          leaveBalanceMax: input.leaveBalanceMax,
+          paidLeaveBalanceMin: input.paidLeaveBalanceMin,
+          paidLeaveBalanceMax: input.paidLeaveBalanceMax,
           baseSalaryMin: input.baseSalaryMin,
           baseSalaryMax: input.baseSalaryMax,
+          unpaidLeaveBalanceMin: input.unpaidLeaveBalanceMin,
+          unpaidLeaveBalanceMax: input.unpaidLeaveBalanceMax,
+          sickLeaveBalanceMin: input.sickLeaveBalanceMin,
+          sickLeaveBalanceMax: input.sickLeaveBalanceMax,
+          deductionPerDayMin: input.deductionPerDayMin,
+          deductionPerDayMax: input.deductionPerDayMax,
           identityUserId: input.identityUserId,
         },
       },
@@ -153,23 +178,17 @@ export class EmployeeService {
           employeeNumber: input.employeeNumber,
           dateOfJoiningMin: input.dateOfJoiningMin,
           dateOfJoiningMax: input.dateOfJoiningMax,
-          leaveBalanceMin: input.leaveBalanceMin,
-          leaveBalanceMax: input.leaveBalanceMax,
+          paidLeaveBalanceMin: input.paidLeaveBalanceMin,
+          paidLeaveBalanceMax: input.paidLeaveBalanceMax,
           baseSalaryMin: input.baseSalaryMin,
           baseSalaryMax: input.baseSalaryMax,
+          unpaidLeaveBalanceMin: input.unpaidLeaveBalanceMin,
+          unpaidLeaveBalanceMax: input.unpaidLeaveBalanceMax,
+          sickLeaveBalanceMin: input.sickLeaveBalanceMin,
+          sickLeaveBalanceMax: input.sickLeaveBalanceMax,
+          deductionPerDayMin: input.deductionPerDayMin,
+          deductionPerDayMax: input.deductionPerDayMax,
           identityUserId: input.identityUserId,
-        },
-      },
-      { apiName: this.apiName, ...config },
-    );
-
-  getEmployeeByUserId = (userId: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, EmployeeDto>(
-      {
-        method: 'GET',
-        url: '/api/app/employees',
-        params: {
-          identityUserId: userId,
         },
       },
       { apiName: this.apiName, ...config },

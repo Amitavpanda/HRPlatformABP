@@ -4,6 +4,7 @@ using HRManagement.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace HRManagement.Migrations
 {
     [DbContext(typeof(HRManagementDbContext))]
-    partial class HRManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250712132637_migrationleavebalance")]
+    partial class migrationleavebalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,11 +128,6 @@ namespace HRManagement.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DateOfJoining");
 
-                    b.Property<decimal>("DeductionPerDay")
-                        .HasMaxLength(1000)
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("DeductionPerDay");
-
                     b.Property<Guid?>("DeleterId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("DeleterId");
@@ -169,16 +167,6 @@ namespace HRManagement.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("PaidLeaveBalance");
-
-                    b.Property<decimal>("SickLeaveBalance")
-                        .HasMaxLength(1000)
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("SickLeaveBalance");
-
-                    b.Property<decimal>("UnpaidLeaveBalance")
-                        .HasMaxLength(1000)
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("UnpaidLeaveBalance");
 
                     b.HasKey("Id");
 

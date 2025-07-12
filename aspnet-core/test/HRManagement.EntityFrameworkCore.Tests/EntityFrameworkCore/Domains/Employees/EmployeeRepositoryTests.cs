@@ -25,13 +25,13 @@ namespace HRManagement.EntityFrameworkCore.Domains.Employees
             {
                 // Act
                 var result = await _employeeRepository.GetListAsync(
-                    employeeNumber: "77bbf33250304481a8dee3b99b80cb480f728e16f58c46d496de96a2f9f221859e1eab6b9fb840808bf2f587f1cc1ce987b7"
+                    employeeNumber: "def6f9c66e014679921bfa2ce5aa41b095d2d5ed21524e9a8a7ecf957a719a2a7eed955385cf45f89dc4313fc3d294149d18"
                 );
 
                 // Assert
                 result.Count.ShouldBe(1);
                 result.FirstOrDefault().ShouldNotBe(null);
-                result.First().Id.ShouldBe(Guid.Parse("c5f24531-de6f-4c97-a52a-57049cec3ecc"));
+                result.First().Id.ShouldBe(Guid.Parse("2ebac9f1-3c46-4110-9ed9-b8a8ae7b4c9d"));
             });
         }
 
@@ -43,7 +43,7 @@ namespace HRManagement.EntityFrameworkCore.Domains.Employees
             {
                 // Act
                 var result = await _employeeRepository.GetCountAsync(
-                    employeeNumber: "78f849fd599d45d5841f222d049470c43007e3c9dd7a49a8875989aadfdfc3865dd9aee7c6544deca97f1947fd13e23084a6"
+                    employeeNumber: "9a4c3f136fa14e469c71c5c998044a1afd79ef2f52a246a7976f88f90c36160cdb0c82728af04f7c8211bb760fe67b677d8d"
                 );
 
                 // Assert
