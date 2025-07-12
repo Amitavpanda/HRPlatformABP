@@ -24,7 +24,7 @@ using HRManagement.Shared;
 namespace HRManagement.Employees
 {
     [RemoteService(IsEnabled = false)]
-    [Authorize(HRManagementPermissions.Employees.Default)]
+ 
     public abstract class EmployeesAppServiceBase : HRManagementAppService
     {
         protected IDistributedCache<EmployeeDownloadTokenCacheItem, string> _downloadTokenCache;

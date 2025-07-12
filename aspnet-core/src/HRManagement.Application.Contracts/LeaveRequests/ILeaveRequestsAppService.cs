@@ -24,7 +24,7 @@ namespace HRManagement.LeaveRequests
 
         Task DeleteAsync(Guid id);
 
-        Task<LeaveRequestDto> CreateAsync(LeaveRequestCreateDto input);
+        Task<CreateLeaveRequestResultDto> CreateAsync(LeaveRequestCreateDto input);
 
         Task<LeaveRequestDto> UpdateAsync(Guid id, LeaveRequestUpdateDto input);
 

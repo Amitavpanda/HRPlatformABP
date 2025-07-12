@@ -1,15 +1,17 @@
-using HRManagement.Shared;
 using Asp.Versioning;
+using HRManagement.Employees;
+using HRManagement.LeaveRequests;
+using HRManagement.Shared;
+using HRManagement.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
-using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
-using HRManagement.LeaveRequests;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Content;
-using HRManagement.Shared;
 
 namespace HRManagement.Controllers.LeaveRequests
 {
@@ -17,14 +19,17 @@ namespace HRManagement.Controllers.LeaveRequests
     [Area("app")]
     [ControllerName("LeaveRequest")]
     [Route("api/app/leave-requests")]
+    [AllowAnonymous]
 
     public abstract class LeaveRequestControllerBase : AbpController
     {
         protected ILeaveRequestsAppService _leaveRequestsAppService;
+        protected IEmployeesAppService _employeesAppService;
 
-        public LeaveRequestControllerBase(ILeaveRequestsAppService leaveRequestsAppService)
+        public LeaveRequestControllerBase(ILeaveRequestsAppService leaveRequestsAppService, IEmployeesAppService employeesAppService)
         {
             _leaveRequestsAppService = leaveRequestsAppService;
+            _employeesAppService = employeesAppService;
         }
 
         [HttpGet]
@@ -62,8 +67,23 @@ namespace HRManagement.Controllers.LeaveRequests
 
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("employee-leave-balance/{employeeId}")]
+        public virtual async Task<IActionResult> GetLeaveBalance(Guid employeeId)
+        {
+            // You may have a method like GetAsync on EmployeeAppService
+            var employee = await _employeesAppService.GetAsync(employeeId);
+            if (employee == null)
+                return NotFound();
+
+            // Make sure your EmployeeDto (or entity) has a LeaveBalance property
+            var balance = employee.LeaveBalance;
+            return Ok(new { balance });
+        }
+
         [HttpPost]
-        public virtual Task<LeaveRequestDto> CreateAsync(LeaveRequestCreateDto input)
+        public virtual Task<CreateLeaveRequestResultDto> CreateAsync(LeaveRequestCreateDto input)
         {
             return _leaveRequestsAppService.CreateAsync(input);
         }

@@ -135,10 +135,10 @@ public class HRManagementHttpApiHostModule : AbpModule
             //Default authentication(API key)
             //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 
-            // Expose Elsa API endpoints
+            // Expose Elsa API endpointsz 
             elsa.UseWorkflowsApi();
 
-            // Enable JavaScript, C#, Liquid expressions and HTTP/timer activities
+            // Enable JavaScript, C#, Liquid expressi ons and HTTP/timer activities
             elsa.UseJavaScript();
             elsa.UseCSharp();
             elsa.UseLiquid();

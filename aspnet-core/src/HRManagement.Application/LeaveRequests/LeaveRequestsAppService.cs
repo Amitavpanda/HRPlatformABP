@@ -5,6 +5,7 @@ using HRManagement.Shared;
 using HRManagement.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using MiniExcelLibs;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,10 @@ using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -25,7 +30,7 @@ using Volo.Abp.Identity;
 namespace HRManagement.LeaveRequests
 {
     [RemoteService(IsEnabled = false)]
-    [Authorize(HRManagementPermissions.LeaveRequests.Default)]
+
     public abstract class LeaveRequestsAppServiceBase : HRManagementAppService
     {
         protected IDistributedCache<LeaveRequestDownloadTokenCacheItem, string> _downloadTokenCache;
@@ -116,19 +121,102 @@ namespace HRManagement.LeaveRequests
             await _leaveRequestRepository.DeleteAsync(id);
         }
 
-        [Authorize(HRManagementPermissions.LeaveRequests.Create)]
-        public virtual async Task<LeaveRequestDto> CreateAsync(LeaveRequestCreateDto input)
+
+        public virtual async Task<CreateLeaveRequestResultDto> CreateAsync(LeaveRequestCreateDto input)
         {
-            if (input.EmployeeId == default)
+            try
             {
-                throw new UserFriendlyException(L["The {0} field is required.", L["Employee"]]);
+                if (input.EmployeeId == default)
+                {
+                    throw new UserFriendlyException(L["The {0} field is required.", L["Employee"]]);
+                }
+                using var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var workflowEndpoint = "https://localhost:44325/workflows/leave-requests/validate";
+
+                var payload = new
+                {
+                    EmployeeId = input.EmployeeId,
+                    StartDate = input.StartDate,
+                    EndDate = input.EndDate
+                };
+                var json = JsonSerializer.Serialize(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Log the payload
+                Logger.LogInformation("Sending payload to Elsa workflows: {@Payload}", payload);
+                var response = await httpClient.PostAsync(workflowEndpoint, content);
+
+                Logger.LogInformation("Received response from workflow: {StatusCode}", response.StatusCode);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Logger.LogError("Elsa workflow returned error status: {StatusCode} with content: {ErrorContent}", response.StatusCode, errorContent);
+
+                    return new CreateLeaveRequestResultDto
+                    {
+                        WorkflowStatus = "Error",
+                        LeaveRequest = null,
+                        Message = $"Workflow error: {response.StatusCode}. Details: {errorContent}"
+                    };
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Logger.LogInformation("Workflow response content: {ResponseContent}", responseContent);
+
+                Dictionary<string, string>? workflowResult = null;
+                string status = "Rejected";
+
+                try
+                {
+                    workflowResult = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent);
+                    status = workflowResult?["status"] ?? "Rejected";
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Failed to parse workflow response JSON. Raw response: {ResponseContent}", responseContent);
+                }
+
+                if (status == "Rejected")
+                {
+                    Logger.LogInformation("Leave request rejected due to workflow status: {Status}", status);
+                    return new CreateLeaveRequestResultDto
+                    {
+                        WorkflowStatus = status,
+                        LeaveRequest = null,
+                        Message = "Leave request rejected due to insufficient leave balance."
+                    };
+                }
+
+                var leaveRequest = await _leaveRequestManager.CreateAsync(
+                    input.EmployeeId,
+                    input.ReviewedBy,
+                    input.LeaveRequestType,
+                    input.StartDate,
+                    input.EndDate,
+                    input.LeaveRequestStatus,
+                    input.RequestedOn,
+                    input.ReviewedOn,
+                    input.WorkflowInstanceId
+                );
+
+                var dto = ObjectMapper.Map<LeaveRequest, LeaveRequestDto>(leaveRequest);
+
+                Logger.LogInformation("Leave request created successfully for EmployeeId: {EmployeeId}", input.EmployeeId);
+
+                return new CreateLeaveRequestResultDto
+                {
+                    WorkflowStatus = status,
+                    LeaveRequest = dto,
+                    Message = "Leave request created successfully."
+                };
             }
-
-            var leaveRequest = await _leaveRequestManager.CreateAsync(
-            input.EmployeeId, input.ReviewedBy, input.LeaveRequestType, input.StartDate, input.EndDate, input.LeaveRequestStatus, input.RequestedOn, input.ReviewedOn, input.WorkflowInstanceId
-            );
-
-            return ObjectMapper.Map<LeaveRequest, LeaveRequestDto>(leaveRequest);
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Failed to create leave request.");
+                throw; // Or wrap in a UserFriendlyException if you want
+            }
         }
 
         [Authorize(HRManagementPermissions.LeaveRequests.Edit)]

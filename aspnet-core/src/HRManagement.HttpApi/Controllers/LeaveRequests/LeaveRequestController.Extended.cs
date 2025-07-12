@@ -6,6 +6,7 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 using HRManagement.LeaveRequests;
+using HRManagement.Employees;
 
 namespace HRManagement.Controllers.LeaveRequests
 {
@@ -16,8 +17,9 @@ namespace HRManagement.Controllers.LeaveRequests
 
     public class LeaveRequestController : LeaveRequestControllerBase, ILeaveRequestsAppService
     {
-        public LeaveRequestController(ILeaveRequestsAppService leaveRequestsAppService) : base(leaveRequestsAppService)
+        public LeaveRequestController(ILeaveRequestsAppService leaveRequestsAppService, IEmployeesAppService employeesAppService) : base(leaveRequestsAppService, employeesAppService)
         {
+
         }
     }
 }
