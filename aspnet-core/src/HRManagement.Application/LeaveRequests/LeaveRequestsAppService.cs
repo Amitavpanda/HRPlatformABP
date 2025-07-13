@@ -135,7 +135,8 @@ namespace HRManagement.LeaveRequests
                 var workflowEndpoint = "https://localhost:44325/workflows/leave-requests/validate";
 
                 var payload = new
-                {
+                {   
+                    LeaveRequestType = input.LeaveRequestType,
                     EmployeeId = input.EmployeeId,
                     StartDate = input.StartDate,
                     EndDate = input.EndDate
@@ -178,16 +179,17 @@ namespace HRManagement.LeaveRequests
                     Logger.LogError(ex, "Failed to parse workflow response JSON. Raw response: {ResponseContent}", responseContent);
                 }
 
-                if (status == "Rejected")
-                {
-                    Logger.LogInformation("Leave request rejected due to workflow status: {Status}", status);
-                    return new CreateLeaveRequestResultDto
-                    {
-                        WorkflowStatus = status,
-                        LeaveRequest = null,
-                        Message = "Leave request rejected due to insufficient leave balance."
-                    };
-                }
+                //if (status == "Rejected")
+                //{
+                //    Logger.LogInformation("Leave request rejected due to workflow status: {Status}", status);
+                //    return new CreateLeaveRequestResultDto
+                //    {
+                //        WorkflowStatus = status,
+                //        LeaveRequest = null,
+                //        Message = "Leave request rejected due to insufficient leave balance."
+                //    };
+                //}
+                input.WorkflowInstanceId = status;
 
                 var leaveRequest = await _leaveRequestManager.CreateAsync(
                     input.EmployeeId,
@@ -209,7 +211,9 @@ namespace HRManagement.LeaveRequests
                 {
                     WorkflowStatus = status,
                     LeaveRequest = dto,
-                    Message = "Leave request created successfully."
+                    Message = status == "Valid"
+                ? "Leave request created successfully."
+                : "Leave request rejected due to insufficient leave balance."
                 };
             }
             catch (Exception ex)

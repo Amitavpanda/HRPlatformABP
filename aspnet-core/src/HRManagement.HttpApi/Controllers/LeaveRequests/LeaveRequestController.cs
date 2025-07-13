@@ -70,7 +70,7 @@ namespace HRManagement.Controllers.LeaveRequests
         [AllowAnonymous]
         [HttpGet]
         [Route("employee-leave-balance/{employeeId}")]
-        public virtual async Task<IActionResult> GetLeaveBalance(Guid employeeId)
+        public virtual async Task<IActionResult> GetLeaveBalance(Guid employeeId, [FromQuery] int leaveRequestType)
         {
             // You may have a method like GetAsync on EmployeeAppService
             var employee = await _employeesAppService.GetAsync(employeeId);
@@ -78,7 +78,21 @@ namespace HRManagement.Controllers.LeaveRequests
                 return NotFound();
 
             // Make sure your EmployeeDto (or entity) has a LeaveBalance property
-            var balance = employee.PaidLeaveBalance;
+            decimal balance = 0;
+            switch (leaveRequestType)
+            {
+                case 1:
+                    balance = employee.PaidLeaveBalance;
+                    break;
+                case 0:
+                    balance = employee.SickLeaveBalance;
+                    break;
+                case 2:
+                    balance = employee.UnpaidLeaveBalance; // Unpaid leave doesn't require balance, but you may return 0 or a special value.
+                    break;
+                default:
+                    return BadRequest("Invalid leave type.");
+            }
             return Ok(new { balance });
         }
 

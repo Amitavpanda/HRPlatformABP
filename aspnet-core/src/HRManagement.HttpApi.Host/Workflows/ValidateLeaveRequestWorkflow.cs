@@ -16,6 +16,8 @@ namespace HRManagement.Workflows
         public string EmployeeId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public int LeaveRequestType { get; set; } 
     }
     public class ValidateLeaveRequestWorkflow : WorkflowBase
     {
@@ -29,6 +31,7 @@ namespace HRManagement.Workflows
             var requestedDaysVar = builder.WithVariable<int>();
             var balanceVar = builder.WithVariable<int>();
             var apiResponseVar = builder.WithVariable<ExpandoObject>();
+            var leaveRequestTypeVar = builder.WithVariable<int>();
 
             builder.Root = new Sequence
             {
@@ -89,6 +92,19 @@ namespace HRManagement.Workflows
                             return endDate;
                         })
                     },
+
+
+                    new SetVariable
+{
+    Variable = leaveRequestTypeVar,
+    Value = new(context =>
+    {
+        var body = bodyVar.Get(context)!;
+        var leaveType = body.LeaveRequestType;
+        Console.WriteLine($"Extracted LeaveRequestType: {leaveType}");
+        return leaveType;
+    })
+},
                     new Inline(context =>
                     {
                         var empId = employeeIdVar.Get(context);
@@ -123,7 +139,8 @@ namespace HRManagement.Workflows
                         Url = new(context =>
                         {
                             var empId = employeeIdVar.Get(context);
-                            var url = $"https://localhost:44325/api/app/leave-requests/employee-leave-balance/{empId}";
+                            var leaveType = leaveRequestTypeVar.Get(context);
+                            var url = $"https://localhost:44325/api/app/leave-requests/employee-leave-balance/{empId}?leaveRequestType={leaveType}";
                             Console.WriteLine($"Calling leave balance API: {url}");
                             return new Uri(url);
                         }),
@@ -172,48 +189,59 @@ namespace HRManagement.Workflows
                     }),
 
                     // Decision and response
-                    new If
-                    {
-                        Condition = new(context =>
-                        {
-                            var balance = balanceVar.Get(context);
-                            var days = requestedDaysVar.Get(context);
-                            Console.WriteLine($"Decision check: balance={balance}, requestedDays={days}");
-                            return balance >= days;
-                        }),
-                        Then = new Sequence
-                        {
-                            Activities =
-                            {
-                                new Inline(context =>
-                                {
-                                    Console.WriteLine("Leave request is VALID. Returning OK response.");
-                                    return new ValueTask();
-                                }),
-                                new WriteHttpResponse
-                                {
-                                    Content = new(context => new { status = "Valid" }),
-                                    StatusCode = new(HttpStatusCode.OK)
-                                }
-                            }
-                        },
-                        Else = new Sequence
-                        {
-                            Activities =
-                            {
-                                new Inline(context =>
-                                {
-                                    Console.WriteLine("Leave request is REJECTED. Returning BadRequest response.");
-                                    return new ValueTask();
-                                }),
-                                new WriteHttpResponse
-                                {
-                                    Content = new(context => new { status = "Rejected" }),
-                                    StatusCode = new(HttpStatusCode.BadRequest)
-                                }
-                            }
-                        }
-                    }
+new If
+{
+    Condition = new(context =>
+    {
+        var leaveType = leaveRequestTypeVar.Get(context);
+        if (leaveType == 2)
+        {
+            Console.WriteLine("Unpaid leave requested: automatically valid.");
+            return true;
+        }
+        var balance = balanceVar.Get(context);
+        var days = requestedDaysVar.Get(context);
+        Console.WriteLine($"Decision check: balance={balance}, requestedDays={days}");
+        return balance >= days;
+    }),
+    Then = new Sequence
+    {
+        Activities =
+        {
+            new Inline(context =>
+            {
+                Console.WriteLine("Leave request is VALID. Returning OK response.");
+                return new ValueTask();
+            }),
+            new WriteHttpResponse
+            {
+                Content = new(context => new { status = "Valid" }),
+                StatusCode = new(HttpStatusCode.OK)
+            }
+        }
+    },
+    Else = new Sequence
+    {
+        Activities =
+        {
+            new Inline(context =>
+            {
+                Console.WriteLine("Leave request is REJECTED. Returning BadRequest response.");
+                return new ValueTask();
+            }),
+            new WriteHttpResponse
+            {
+                Content = new(context => new { status = "Rejected" }),
+                StatusCode = new(HttpStatusCode.OK)
+            }
+        }
+    }
+}
+
+
+
+
+
                 }
             };
         }
