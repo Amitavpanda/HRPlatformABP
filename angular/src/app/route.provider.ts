@@ -40,5 +40,12 @@ function configureRoutes() {
       order: 4,
       layout: eLayoutType.application,
     },
+    {
+      path: '/hrmanagers/dashboard',
+      name: 'HR Manager Dashboard',
+      iconClass: 'fas fa-user-tie',
+      order: 5,
+      layout: eLayoutType.application,
+    },
   ]);
 }

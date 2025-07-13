@@ -42,6 +42,19 @@ export class HRManagerService {
       { apiName: this.apiName, ...config },
     );
 
+
+      getHRMAnaagerByUserId = (userId: string, config?: Partial<Rest.Config>) =>
+        this.restService.request<any, HRManagerDto>(
+          {
+            method: 'GET',
+            url: '/api/app/hrmanagers',
+            params: {
+              identityUserId: userId,
+            },
+          },
+          { apiName: this.apiName, ...config },
+        );
+
   deleteAll = (input: GetHRManagersInput, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>(
       {

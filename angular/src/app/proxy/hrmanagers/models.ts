@@ -15,6 +15,7 @@ export interface HRManagerCreateDto {
 }
 
 export interface HRManagerDto extends FullAuditedEntityDto<string> {
+  items : any;
   department?: string;
   hrNumber?: string;
   identityUserId?: string;

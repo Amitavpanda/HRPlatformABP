@@ -12,6 +12,9 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Content;
+using Volo.Abp.ObjectMapping;
+using static HRManagement.Permissions.HRManagementPermissions;
+using Volo.Abp.Domain.Repositories;
 
 namespace HRManagement.Controllers.LeaveRequests
 {
@@ -50,6 +53,27 @@ namespace HRManagement.Controllers.LeaveRequests
         public virtual Task<LeaveRequestDto> GetAsync(Guid id)
         {
             return _leaveRequestsAppService.GetAsync(id);
+        }
+
+
+        [HttpGet("pending")]
+        public virtual Task<PagedResultDto<LeaveRequestWithNavigationPropertiesDto>> GetPendingAsync(GetLeaveRequestsInput input)
+        {
+            return _leaveRequestsAppService.GetPendingAsync(input);
+        }
+
+        //Approve a leave request
+        [HttpPost("{id}/approve")]
+        public virtual Task<LeaveRequestWithNavigationPropertiesDto> ApproveAsync(Guid id, [FromQuery] Guid hrManagerId)
+        {
+            return _leaveRequestsAppService.ApproveAsync(id, hrManagerId);
+        }
+
+        // Reject a leave request
+        [HttpPost("{id}/reject")]
+        public virtual Task<LeaveRequestWithNavigationPropertiesDto> RejectAsync(Guid id, [FromQuery] Guid hrManagerId)
+        {
+            return _leaveRequestsAppService.RejectAsync(id, hrManagerId);
         }
 
         [HttpGet]
@@ -95,6 +119,8 @@ namespace HRManagement.Controllers.LeaveRequests
             }
             return Ok(new { balance });
         }
+        
+
 
         [HttpPost]
         public virtual Task<CreateLeaveRequestResultDto> CreateAsync(LeaveRequestCreateDto input)

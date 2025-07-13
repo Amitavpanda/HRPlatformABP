@@ -33,8 +33,9 @@ import { EMPLOYEES_EMPLOYEE_ROUTE_PROVIDER } from './employees/employee/provider
 import { ATTENDANCE_LOGS_ATTENDANCE_LOG_ROUTE_PROVIDER } from './attendance-logs/attendance-log/providers/attendance-log-route.provider';
 import { LEAVE_REQUESTS_LEAVE_REQUEST_ROUTE_PROVIDER } from './leave-requests/leave-request/providers/leave-request-route.provider';
 import { PAYROLL_RECORDS_PAYROLL_RECORD_ROUTE_PROVIDER } from './payroll-records/payroll-record/providers/payroll-record-route.provider';
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

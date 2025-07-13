@@ -20,6 +20,10 @@ namespace HRManagement.LeaveRequests
 
         Task<PagedResultDto<LookupDto<Guid>>> GetEmployeeLookupAsync(LookupRequestDto input);
 
+        Task<PagedResultDto<LeaveRequestWithNavigationPropertiesDto>> GetPendingAsync(GetLeaveRequestsInput input);
+        Task<LeaveRequestWithNavigationPropertiesDto> ApproveAsync(Guid id, Guid hrManagerId);
+        Task<LeaveRequestWithNavigationPropertiesDto> RejectAsync(Guid id);
+
         Task<PagedResultDto<LookupDto<Guid>>> GetIdentityUserLookupAsync(LookupRequestDto input);
 
         Task DeleteAsync(Guid id);

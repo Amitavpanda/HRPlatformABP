@@ -1,0 +1,14 @@
+<div class="dashboard-container">
+  <h1>HR Manager Dashboard</h1>
+  <div *ngIf="leaveRequests.length === 0">
+    <p>No pending leave requests.</p>
+  </div>
+  <div *ngFor="let request of leaveRequests" class="leave-request-card">
+    <p><strong>Leave Type:</strong> {{ leaveRequestTypeMap[request.leaveRequest.leaveRequestType] }}</p>
+    <p><strong>Start Date:</strong> {{ request.leaveRequest.startDate | date }}</p>
+    <p><strong>End Date:</strong> {{ request.leaveRequest.endDate | date }}</p>
+    <p><strong>Employee Number:</strong> {{ request.employee.employeeNumber }}</p>
+    <button (click)="approveLeaveRequest(request.leaveRequest.id)" class="approve-btn">Approve</button>
+    <button (click)="rejectLeaveRequest(request.leaveRequest.id)" class="reject-btn">Reject</button>
+  </div>
+</div>

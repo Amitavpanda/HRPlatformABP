@@ -51,6 +51,98 @@ namespace HRManagement.LeaveRequests
 
         }
 
+        public virtual async Task<PagedResultDto<LeaveRequestWithNavigationPropertiesDto>> GetPendingAsync(GetLeaveRequestsInput input)
+        {
+            // Ensure filters for workflowStatus and LeaveRequestStatus
+            input.WorkflowInstanceId = "Valid";
+            input.LeaveRequestStatus = 0;
+
+            // The repository methods should accept all properties from GetLeaveRequestsInput as filters
+            var totalCount = await _leaveRequestRepository.GetCountAsync(
+                input.FilterText,
+                input.LeaveRequestType,
+                input.StartDateMin,
+                input.StartDateMax,
+                input.EndDateMin,
+                input.EndDateMax,
+                input.LeaveRequestStatus,           // "Pending"
+                input.RequestedOnMin,
+                input.RequestedOnMax,
+                input.ReviewedOnMin,
+                input.ReviewedOnMax,
+                input.WorkflowInstanceId,           // "Valid"
+                input.EmployeeId,
+                input.ReviewedBy
+            );
+            var items = await _leaveRequestRepository.GetListWithNavigationPropertiesAsync(
+                input.FilterText,
+                input.LeaveRequestType,
+                input.StartDateMin,
+                input.StartDateMax,
+                input.EndDateMin,
+                input.EndDateMax,
+                input.LeaveRequestStatus,           // "Pending"
+                input.RequestedOnMin,
+                input.RequestedOnMax,
+                input.ReviewedOnMin,
+                input.ReviewedOnMax,
+                input.WorkflowInstanceId,           // "Valid"
+                input.EmployeeId,
+                input.ReviewedBy,
+                input.Sorting,
+                input.MaxResultCount,
+                input.SkipCount
+            );
+
+            return new PagedResultDto<LeaveRequestWithNavigationPropertiesDto>
+            {
+                TotalCount = totalCount,
+                Items = ObjectMapper.Map<List<LeaveRequestWithNavigationProperties>, List<LeaveRequestWithNavigationPropertiesDto>>(items)
+            };
+        }
+
+
+        
+
+        public virtual async Task<LeaveRequestWithNavigationPropertiesDto> ApproveAsync(Guid id, Guid hrManagerId)
+        {
+            var request = await _leaveRequestRepository.GetWithNavigationPropertiesAsync(id);
+
+            if (request == null)
+                throw new UserFriendlyException("Leave request not found.");
+
+            if (request.LeaveRequest.LeaveRequestStatus != 0)
+                throw new UserFriendlyException("Leave request already reviewed.");
+
+            request.LeaveRequest.LeaveRequestStatus = LeaveRequestStatus.Approved;
+            request.LeaveRequest.ReviewedBy = hrManagerId;
+            request.LeaveRequest.ReviewedOn = Clock.Now;
+
+            await _leaveRequestRepository.UpdateAsync(request.LeaveRequest);
+
+            return ObjectMapper.Map<LeaveRequestWithNavigationProperties, LeaveRequestWithNavigationPropertiesDto>(request);
+        }
+
+        // 3. Reject leave request
+        public virtual async Task<LeaveRequestWithNavigationPropertiesDto> RejectAsync(Guid id, Guid hrManagerId)
+        {
+            var request = await _leaveRequestRepository.GetWithNavigationPropertiesAsync(id);
+
+            if (request == null)
+                throw new UserFriendlyException("Leave request not found.");
+
+            if (request.LeaveRequest.LeaveRequestStatus != 0)
+                throw new UserFriendlyException("Leave request already reviewed.");
+
+            request.LeaveRequest.LeaveRequestStatus = LeaveRequestStatus.Rejected;
+            request.LeaveRequest.ReviewedBy = hrManagerId;
+            request.LeaveRequest.ReviewedOn = Clock.Now;
+
+            await _leaveRequestRepository.UpdateAsync(request.LeaveRequest);
+
+            return ObjectMapper.Map<LeaveRequestWithNavigationProperties, LeaveRequestWithNavigationPropertiesDto>(request);
+        }
+
         public virtual async Task<PagedResultDto<LeaveRequestWithNavigationPropertiesDto>> GetListAsync(GetLeaveRequestsInput input)
         {
             var totalCount = await _leaveRequestRepository.GetCountAsync(input.FilterText, input.LeaveRequestType, input.StartDateMin, input.StartDateMax, input.EndDateMin, input.EndDateMax, input.LeaveRequestStatus, input.RequestedOnMin, input.RequestedOnMax, input.ReviewedOnMin, input.ReviewedOnMax, input.WorkflowInstanceId, input.EmployeeId, input.ReviewedBy);
@@ -120,6 +212,7 @@ namespace HRManagement.LeaveRequests
         {
             await _leaveRequestRepository.DeleteAsync(id);
         }
+
 
 
         public virtual async Task<CreateLeaveRequestResultDto> CreateAsync(LeaveRequestCreateDto input)
