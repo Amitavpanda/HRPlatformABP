@@ -114,10 +114,35 @@ namespace HRManagement.LeaveRequests
             if (request.LeaveRequest.LeaveRequestStatus != 0)
                 throw new UserFriendlyException("Leave request already reviewed.");
 
+            Console.WriteLine($"Approving leave request with ID: {id} by HR Manager ID: {hrManagerId}");
             request.LeaveRequest.LeaveRequestStatus = LeaveRequestStatus.Approved;
-            request.LeaveRequest.ReviewedBy = hrManagerId;
+            Console.WriteLine($"Setting LeaveRequestStatus to Approved for request ID: {id}");
             request.LeaveRequest.ReviewedOn = Clock.Now;
+            Console.WriteLine($"Setting ReviewedOn to current time for request ID: {id}");
+            Console.WriteLine("startDate", request.LeaveRequest.StartDate);
+            
+            
+            var employee = await _employeeRepository.GetAsync(request.LeaveRequest.EmployeeId);
+            
+            var deductionPerDay = employee.DeductionPerDay;
+            if (employee == null)
+                throw new UserFriendlyException("Employee not found.");
+            var days = (decimal)(request.LeaveRequest.EndDate.Date - request.LeaveRequest.StartDate.Date).TotalDays + 1;
 
+            switch (request.LeaveRequest.LeaveRequestType)
+            {
+                case LeaveRequestType.PaidLeave:
+                    employee.PaidLeaveBalance -= days;
+                    break;
+                case LeaveRequestType.SickLeave:
+                    employee.SickLeaveBalance -= days;
+                    break;
+                case LeaveRequestType.UnpaidLeave:
+                    employee.UnpaidLeaveBalance += days;
+                    break;
+            }
+
+            await _employeeRepository.UpdateAsync(employee);
             await _leaveRequestRepository.UpdateAsync(request.LeaveRequest);
 
             return ObjectMapper.Map<LeaveRequestWithNavigationProperties, LeaveRequestWithNavigationPropertiesDto>(request);
@@ -135,7 +160,7 @@ namespace HRManagement.LeaveRequests
                 throw new UserFriendlyException("Leave request already reviewed.");
 
             request.LeaveRequest.LeaveRequestStatus = LeaveRequestStatus.Rejected;
-            request.LeaveRequest.ReviewedBy = hrManagerId;
+            //request.LeaveRequest.ReviewedBy = hrManagerId;
             request.LeaveRequest.ReviewedOn = Clock.Now;
 
             await _leaveRequestRepository.UpdateAsync(request.LeaveRequest);

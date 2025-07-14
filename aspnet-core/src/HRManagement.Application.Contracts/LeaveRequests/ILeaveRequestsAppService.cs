@@ -22,7 +22,7 @@ namespace HRManagement.LeaveRequests
 
         Task<PagedResultDto<LeaveRequestWithNavigationPropertiesDto>> GetPendingAsync(GetLeaveRequestsInput input);
         Task<LeaveRequestWithNavigationPropertiesDto> ApproveAsync(Guid id, Guid hrManagerId);
-        Task<LeaveRequestWithNavigationPropertiesDto> RejectAsync(Guid id);
+        Task<LeaveRequestWithNavigationPropertiesDto> RejectAsync(Guid id, Guid hrManagerId);
 
         Task<PagedResultDto<LookupDto<Guid>>> GetIdentityUserLookupAsync(LookupRequestDto input);
 
